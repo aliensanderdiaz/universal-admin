@@ -1,0 +1,32 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Editar caracteristicas del producto</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/productos" class="btn btn-sm btn-outline-secondary">Productos</button>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="!cargando">
+
+    <form (keydown.enter)="$event.preventDefault()" (submit)="editar(productForm)" #productForm="ngForm">
+
+        <div class="form-group row" *ngFor="let caracteristica of caracteristicas; let i = index">
+            <label class="col-sm-2 col-form-label"><strong>{{ caracteristica[0] }}</strong></label>
+            <div class="col-sm-10">
+                <input *ngIf="caracteristica[0] != 'Color'" [type]="caracteristica[1]" class="form-control" [name]="caracteristicasSlug[i]" [placeholder]="caracteristica[0]" [(ngModel)]="caracteristicasAnteriores[caracteristicasSlug[i]]">
+
+                <select *ngIf="caracteristica[0] === 'Color'" class="form-control" [name]="caracteristicasSlug[i]" [(ngModel)]="caracteristicasAnteriores[caracteristicasSlug[i]]">
+                <option *ngFor="let opcion of colores" [value]="opcion.nombre">{{ opcion.nombre }}</option>
+            </select>
+            </div>
+        </div>
+
+        <hr>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+
+
+</div>

@@ -1,0 +1,54 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h3>Ingresar Nueva Resolución</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+
+      <form>
+
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="nombre" name="nombre">
+        </div>
+
+        <div class="form-group">
+            <label>Prefijo</label>
+            <input type="text" class="form-control" placeholder="Prefijo" [(ngModel)]="prefijo" name="prefijo">
+          </div>
+
+
+          <div class="form-group">
+              <label>Numeración Inicial</label>
+              <input type="number" class="form-control" placeholder="Numeración Inicial" [(ngModel)]="numeracionInicial" name="numeracionInicial">
+            </div>
+
+            <div class="form-group">
+                <label>Numeración Final</label>
+                <input type="number" class="form-control" placeholder="Numeración Final" [(ngModel)]="numeracionFinal" name="numeracionFinal">
+              </div>
+
+              <div class="form-group">
+                  <label>Fecha Inicio</label>
+                  <input type="date" class="form-control" placeholder="Fecha Inicio" [(ngModel)]="fechaInicio" name="fechaInicio">
+                </div>
+
+                <div class="form-group">
+                    <label>Fecha Vencimiento</label>
+                    <input type="date" class="form-control" placeholder="Fecha Vencimiento" [(ngModel)]="fechaVencimiento" name="fechaVencimiento">
+                  </div>
+
+
+
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" [(ngModel)]="activo" name="activo">
+          <label class="form-check-label">Activo</label>
+        </div>
+        <button type="submit" class="btn btn-primary" (click)="crearResolucion()">Crear</button>
+      </form>
+
+    </div>
+  </div>
+</div>

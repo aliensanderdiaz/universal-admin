@@ -1,0 +1,17 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Eliminar Imágenes al Producto</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button *ngIf="productoId" routerLink="/productos/producto/{{ productoId }}" class="btn btn-sm btn-outline-secondary">Volver</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="pictures">
+    <div *ngIf="pictures.small.length > 0">
+        <div *ngFor="let imagen of pictures.small; let i = index">
+            <img [src]="imagen">
+            <button type="button" class="btn btn-danger" (click)="eliminarImagen(imagen, i)">Borrar</button>
+        </div>
+    </div>
+</div>

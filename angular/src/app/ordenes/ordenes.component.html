@@ -1,0 +1,200 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Ordenes <span class="badge badge-secondary" *ngIf="totalOrdenes > 0">{{ totalOrdenes }}</span></h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <button class="btn btn-sm btn-outline-secondary" (click)="cargarOrdenes()">RECARGAR</button>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid" *ngIf="ordenes.length > 0">
+  <div class="row">
+    <div class="col-3 text-center">
+      <h2>Cliente</h2>
+    </div>
+    <div class="col-3 text-center">
+      <h2>Productos</h2>
+    </div>
+    <div class="col-3 text-center">
+      <h2>Total</h2>
+    </div>
+    <div class="col-3 text-center"></div>
+  </div>
+
+  <div class="row border-bottom" *ngFor="let orden of ordenes; let i = index">
+    <div class="col-3">
+      <p *ngIf="orden.cliente.tipoId === 'cc'">
+        {{ orden.cliente.primerNombre }} {{ orden.cliente.segundoNombre }} {{ orden.cliente.apellidos }}
+        <br>
+        <strong *ngIf="orden.cliente.nombreComercial">{{ orden.cliente.nombreComercial }}</strong>
+      </p>
+      <p *ngIf="orden.cliente.tipoId === 'nit'">
+        {{ orden.cliente.razonSocial }}
+      </p>
+    </div>
+    <div class="col-3">
+      <p *ngFor="let producto of orden.productos">
+        <strong>{{ producto.producto.caracteristicas.referencia }}</strong> {{ producto.producto.nombre }}
+      </p>
+    </div>
+    <div class="col-3 text-right">{{ orden.total | currency:undefined:'symbol-narrow':'1.2-2':'es-Co' }}</div>
+    <div class="col-3">
+      <button class="btn btn-primary" (click)="elegirOrden(i)">
+        Detalles*
+      </button>
+    </div>
+  </div>
+
+  <hr>
+
+
+</div>
+
+<div class="container-fluid" *ngIf="ordenElegida">
+  <div class="row">
+
+    <div class="col-2"></div>
+    <div class="col-10">
+      <h3>Datos del Cliente</h3>
+    </div>
+
+  </div>
+  <div class="row">
+
+    <div class="col-2"></div>
+    <div class="col-4">
+      <strong>Nombres: </strong><br> {{ ordenElegida.cliente.primerNombre }} {{ ordenElegida.cliente.segundoNombre }}
+      <span class="badge badge-info pointer" (click)="copyMessage(ordenElegida.cliente.primerNombre, ordenElegida.cliente.segundoNombre)" value="click to copy" >Copiar</span>
+    </div>
+    <div class="col-3">
+      <strong>Apellidos: </strong><br> {{ ordenElegida.cliente.apellidos }}
+      <span class="badge badge-info pointer" (click)="copyMessage(ordenElegida.cliente.apellidos)" value="click to copy" >Copiar</span>
+    </div>
+    <div class="col-3"></div>
+
+  </div>
+  <div class="row">
+
+    <div class="col-2"></div>
+    <div class="col-4">
+      <strong>Nombre Comercial: </strong><br> {{ ordenElegida.cliente.nombreComercial }}
+      <span class="badge badge-info pointer" (click)="copyMessage(ordenElegida.cliente.nombreComercial)" value="click to copy" >Copiar</span>
+    </div>
+    <div class="col-4">
+      <strong>Razón Social: </strong><br> {{ ordenElegida.cliente.razonSocial }}
+      <span class="badge badge-info pointer" (click)="copyMessage(ordenElegida.cliente.razonSocial)" value="click to copy" >Copiar</span>
+    </div>
+    <div class="col-2"></div>
+
+  </div>
+  <div class="row">
+
+    <div class="col-2"></div>
+    <div class="col-2">
+      <strong>Tipo Id: </strong><br> {{ ordenElegida.cliente.tipoId }}
+    </div>
+    <div class="col-2">
+      <strong>Numero Id: </strong><br> {{ ordenElegida.cliente.numeroId }}
+      <span class="badge badge-info pointer" (click)="copyMessage(ordenElegida.cliente.numeroId)" value="click to copy" >Copiar</span>
+    </div>
+    <div class="col-6"></div>
+
+  </div>
+  <div class="row">
+
+    <div class="col-2"></div>
+    <div class="col-3">
+      <strong>Dirección: </strong><br> {{ ordenElegida.cliente.direccion }}
+      <span class="badge badge-info pointer" (click)="copyMessage(ordenElegida.cliente.direccion)" value="click to copy" >Copiar</span>
+    </div>
+    <div class="col-2">
+      <strong>Teléfono: </strong><br> {{ ordenElegida.cliente.telefono }}
+      <span class="badge badge-info pointer" (click)="copyMessage(ordenElegida.cliente.telefono)" value="click to copy" >Copiar</span>
+    </div>
+    <div class="col-2">
+      <strong>Ciudad: </strong><br> {{ ordenElegida.cliente.ciudad }}
+    </div>
+    <div class="col-2">
+      <strong>Departamento: </strong><br> {{ ordenElegida.cliente.departamento }}
+    </div>
+    <div class="col-1"></div>
+
+  </div>
+  <hr>
+  <div class="row">
+
+    <div class="col-2"></div>
+    <div class="col-10">
+      <h3>Productos</h3>
+    </div>
+
+  </div>
+  <div class="row border-bottom">
+
+    <div class="col-2"></div>
+    <div class="col-3"><strong>Id</strong></div>
+    <div class="col-3"><strong>Nombre</strong></div>
+    <div class="col-1"><strong>Cantidad</strong></div>
+    <div class="col-2"><strong>Valor</strong></div>
+    <div class="col-1"></div>
+
+  </div>
+  <div class="row" *ngFor="let producto of ordenElegida.productos">
+
+
+    <div class="col-2"></div>
+    <div class="col-3">
+      <strong>{{ producto.producto._id }}</strong>
+      <span class="badge badge-info pointer" (click)="copyMessage(producto.producto._id)" value="click to copy" >Copiar</span>
+    </div>
+    <div class="col-3">{{ producto.producto.nombre }}</div>
+    <div class="col-1 text-right">{{ producto.cantidad }}</div>
+    <div class="col-2 text-right">{{ producto.valorVenta | currency:undefined:'symbol-narrow':'1.2-2':'es-Co' }}</div>
+    <div class="col-1"></div>
+
+  </div>
+  <hr>
+  <div class="row">
+
+    <div class="col-2"></div>
+    <div class="col-10">
+      <h1>Total: {{ ordenElegida.total | currency:undefined:'symbol-narrow':'1.2-2':'es-Co'}}</h1>
+    </div>
+
+
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-3">
+      <button type="button" class="btn btn-secondary btn-lg btn-block" (click)="crearFacturaPos()">Factura Pos</button>
+    </div>
+    <div class="col-3">
+      <button type="button" class="btn btn-primary btn-lg btn-block" (click)="crearFacturaElectronica()">Factura Electrónica</button>
+    </div>
+    <div class="col-3">
+      <button type="button" class="btn btn-warning btn-lg btn-block" (click)="modificarOrden(ordenElegida._id, 'RECHAZADA')">Rechazada</button>
+    </div>
+    <div class="col-1"></div>
+  </div>
+
+  <hr>
+
+  <!-- <div class="row">
+    <div class="col-3"></div>
+    <div class="col-2">
+      <button type="button" class="btn btn-primary btn-block" (click)="modificarOrden(ordenElegida._id, 'COMPLETADA')">Completada</button>
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn btn-warning btn-block" (click)="modificarOrden(ordenElegida._id, 'RECHAZADA')">Rechazada</button>
+    </div>
+    <div class="col-2">
+      <button type="button" class="btn btn-danger btn-block" (click)="modificarOrden(ordenElegida._id)">Eliminada</button>
+    </div>
+    <div class="col-3"></div>
+  </div> -->
+
+  <hr>
+</div>

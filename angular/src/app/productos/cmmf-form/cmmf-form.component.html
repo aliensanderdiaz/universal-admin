@@ -1,0 +1,50 @@
+<div class="modal-header">
+    <h4 class="modal-title">{{ nombreProducto }}</h4>
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+
+
+  <div class="modal-body">
+
+      <div>
+        <p *ngFor="let c of cmmf; index as i">
+          <strong>{{ c.proveedor.primerNombre }}</strong>
+          - '{{c.codigo}}'
+          - <span class="badge badge-danger pointer ml-1" (click)="eliminar(i)">X</span>
+        </p>
+      </div>
+
+      <div *ngIf="proveedorTempCreado">
+        {{ proveedorTemp.primerNombre }}
+
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" placeholder="Codigo" [(ngModel)]="codigoTemp">
+            <div class="input-group-append">
+              <button class="btn btn-outline-primary" type="button" (click)="agregarCmmfTemp()">+</button>
+              <button class="btn btn-outline-danger" type="button" (click)="otroProveedor()">X</button>
+            </div>
+          </div>
+        
+      </div>
+      <hr>
+
+      <div class="input-group mb-3" [hidden]="cargando">
+        <input #inputProveedor type="text" class="form-control" placeholder="Buscar Proveedor">
+      </div>
+
+
+      <ul [style.display]="proveedores.length> 0 ? 'block' : 'none'">
+        <li *ngFor="let proveedor of proveedores">
+          <span>{{ proveedor.primerNombre }}</span>
+          <button type="button" class="btn btn-link" (click)="elegirProveedor(proveedor.primerNombre, proveedor._id)">Elegir Proveedor</button>
+        </li>
+      </ul>
+
+      <div>
+          <button type="button" class="btn btn-primary btn-block" (click)="guardar()">Guardar</button>
+      </div>
+
+    
+    </div>

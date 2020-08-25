@@ -1,0 +1,127 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Detalles del Producto</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/productos" class="btn btn-sm btn-outline-secondary">Productos</button>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="!cargando">
+    <div class="row">
+        <div class="col">
+            <div class="row" *ngIf="!cambiarNombre">
+
+                <h3 style="text-align: center">
+                    {{ producto.nombre }} -
+                    <span class="badge badge-info pointer" (click)="cambiarNombre = !cambiarNombre">Editar</span>
+                </h3>
+            </div>
+            <div class="row" *ngIf="cambiarNombre">
+
+
+                <div class="input-group">
+                    <input type="text" class="form-control" [(ngModel)]="producto.nombre">
+                    <div class="input-group-append">
+                        <button type="button" class="btn btn-outline-info" (click)="guardar()">Guardar</button>
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- <button (click)="irAProductoTest()">Test</button> -->
+        </div>
+        <div class="col-2">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item pointer" routerLink="/productos/crear-producto-sencillo">Crear Otro</a>
+                    <a *ngIf="producto.pictures.small.length === 0" class="dropdown-item pointer" routerLink="/productos/editar-producto/agregar-imagenes/{{ producto._id }}">Agregar Imágenes</a>
+                    <a *ngIf="producto.pictures.small.length > 0" class="dropdown-item pointer" routerLink="/productos/editar-producto/eliminar-imagenes/{{ producto._id }}">Eliminar Imágenes</a>
+                    <a class="dropdown-item pointer" routerLink="/productos/editar-producto/agregar-descripcion/{{ producto._id }}">Agregar Descripción</a>
+                    <a class="dropdown-item pointer" routerLink="/productos/editar-producto/{{ producto._id }}">Agregar Accesorios</a>
+                    <a class="dropdown-item pointer" routerLink="/productos/editar-producto/{{ producto._id }}">Agregar Repuestos</a>
+                    <a class="dropdown-item pointer" routerLink="/productos/crear-desde/{{ producto._id }}">Crear Copia</a>
+                    <a class="dropdown-item pointer" routerLink="/productos/editar-producto/agregar-hermanos/{{ producto._id }}">Agregar Hermanos</a>
+                    <a class="dropdown-item pointer" routerLink="/productos/editar-producto/editar-detalles/{{ producto._id }}">Editar Detalles</a>
+                    <a class="dropdown-item pointer" routerLink="/productos/editar-producto/editar-caracteristicas/{{ producto._id }}">Editar Características</a>
+                    <a class="dropdown-item pointer" routerLink="/productos/editar-producto/agregar-videos-cmmf/{{ producto._id }}">Agregar Videos o CMMF</a>
+                    <a class="dropdown-item pointer" routerLink="/productos/crear-combo/{{ producto._id }}">COMBO - Agregar</a>
+                    <a class="dropdown-item pointer" routerLink="/compras/historico-compras/{{ producto._id }}">Historico Compras</a>
+                    <a class="dropdown-item pointer" routerLink="/productos/historico-producto/{{ producto._id }}">Historico Producto</a>
+                    <a class="dropdown-item pointer" routerLink="/productos/editar-producto/compartir-repuestos-accesorios/{{ producto._id }}">Compartir repuestos accesorios</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+    <div class="row">
+        <div class="col" *ngIf="producto.pictures.large.length > 0">
+            <img [src]="producto.pictures.large[producto.pictures.pp - 1]" alt="">
+            <hr>
+            <img class="pointer" *ngFor="let img of producto.pictures.small; let i = index" [src]="img" alt="" (click)="producto.pictures.pp = i + 1">
+        </div>
+        <div class="col">
+            <div class="row">
+                <div class="col">
+
+                    <h3>Caracteristicas</h3>
+                    <div class="form-group row" *ngFor="let caracteristica of caracteristicasCap; let i = index">
+                        <ng-template [ngIf]="producto.caracteristicas[caracteristica[1]] || producto.caracteristicas[caracteristica[1]] === 0">
+                            <label class="col-sm-4 col-form-label">{{ caracteristica[0] }}</label>
+                            <div class="col-sm-8">
+                                <input type="text" readonly class="form-control-plaintext" [value]="producto.caracteristicas[caracteristica[1]]">
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row" *ngIf="detalles && detalles.length > 0">
+                <div class="col">
+                    <h3>Detalles</h3>
+                    <div class="form-group row" *ngFor="let detalle of detalles; let i = index">
+                        <label class="col-sm-4 col-form-label">{{ detallesCap[i] }}</label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control-plaintext" [value]="producto.detalles[detalle]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col" *ngIf="producto.descripcion.length > 0">
+            <h4>Descripción</h4>
+            <div *ngFor="let desc of producto.descripcion">
+                <div class="row" *ngIf="desc.alineacion === 'left'">
+                    <div class="col">
+                        <img [src]="desc.imagen" alt="">
+                    </div>
+                    <div class="col">
+                        <p>{{ desc.texto }}</p>
+                    </div>
+                </div>
+                <div class="row" *ngIf="desc.alineacion === 'right'">
+                    <div class="col">
+                        <p>{{ desc.texto }}</p>
+                    </div>
+                    <div class="col">
+                        <img [src]="desc.imagen" alt="">
+                    </div>
+                </div>
+                <div class="row" *ngIf="desc.alineacion === 'center'">
+                    <div class="col">
+                        <p>{{ desc.texto }}</p>
+                        <img [src]="desc.imagen" alt="">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

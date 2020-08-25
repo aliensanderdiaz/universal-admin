@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Compartir Repuestos y Accesorios entre Productos</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <button *ngIf="productoId" routerLink="/productos/producto/{{productoId}}"
+        class="btn btn-sm btn-outline-secondary">Volver</button>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row alert alert-warning" role="alert">
+    Busca un producto y comparte todos los accesorios y repuestos
+  </div>
+  <div class="row">
+    <div class="col">
+      <input class="form-control" #inputProducto type="text" placeholder="Referencia">
+      <hr>
+      <ul [style.display]="productosFiltrados.length> 0 ? 'block' : 'none'">
+        <li *ngFor="let producto of productosFiltrados">
+          <span>{{ producto.nombre }} - {{ producto.caracteristicas.referencia }}</span>
+          <button type="button" class="btn btn-link" (click)="compartir(producto)">Compartir</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="row">
+    <h3>Productos Compartidos</h3>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let producto of productosCompartidos">
+          {{ producto.caracteristicas.referencia }} - {{ producto.nombre }}
+          <a class="badge badge-dark pointer" href="/productos/editar-producto/{{ producto._id }}" target="_blank">
+              VER
+          </a>
+      </li>
+    </ul>
+  </div>
+</div>

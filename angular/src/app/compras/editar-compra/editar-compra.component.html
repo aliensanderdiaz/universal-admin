@@ -1,0 +1,284 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Editar compra</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <button routerLink="/compras" class="btn btn-sm btn-outline-secondary">Compras</button>
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="invoice">
+
+  <div class="row justify-content-around">
+    <div class="col-5">
+      <div class="row">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Fecha de Proveedor</span>
+          </div>
+          <input type="text" class="form-control" [value]="invoice.supplierDate | date" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="col-5">
+      <div class="row" *ngIf="invoice.dueDate">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Fecha de Vencimiento</span>
+          </div>
+          <input type="text" class="form-control" [value]="invoice.dueDate | date" readonly>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-around">
+    <div class="col-5">
+      <div class="row">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Proveedor</span>
+          </div>
+          <input *ngIf="invoice.supplier.tipoId === 'nit'" type="text" class="form-control"
+            [value]="invoice.supplier.primerNombre" readonly>
+          <input *ngIf="invoice.supplier.tipoId === 'cc'" type="text" class="form-control"
+            [value]="invoice.supplier.primerNombre + invoice.supplier.segundoNombre + invoice.supplier.apellidos"
+            readonly>
+        </div>
+      </div>
+    </div>
+    <div class="col-5">
+      <div class="row">
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">Factura Proveedor</span>
+          </div>
+          <input type="text" class="form-control" [value]="invoice.supplierNumber" readonly>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  
+
+  
+
+
+</div>
+
+<div class="container-fluid" *ngIf="productosElegidos">
+  <div class="row">
+      <div class="col-4">
+          <h5>Producto</h5>
+      </div>
+      <div class="col">
+          <h5>Cant</h5>
+      </div>
+      <div class="col-2">
+          <h5>Vr Unit.</h5>
+      </div>
+      <div class="col">
+          <h5>Desc1(%)</h5>
+      </div>
+      <div class="col">
+          <h5>Desc2(%)</h5>
+      </div>
+      <div class="col">
+          <h5>Neto</h5>
+      </div>
+      <div class="col">
+          <h5>+Iva</h5>
+      </div>
+      <div class="col">
+          <h5>+IvaUnit</h5>
+      </div>
+  </div>
+  <div class="row" *ngFor="let product of productosElegidos; trackBy: trackByProductId; let i = index">
+
+      <div class="col-12">
+          <div class="row">
+              <div class="col-4">
+                  <p>
+                      <strong>{{ i + 1 }}</strong>
+                      <span class="badge badge-primary pointer ml-1" *ngIf="i > 0" (click)="subir(i)">Up</span>
+                      <span class="badge badge-success pointer ml-1" *ngIf="i < productosElegidos.length - 1" (click)="bajar(i)">Dw</span>
+                      - {{ product.productName }}
+                      <span class="badge badge-danger pointer" (click)="eliminarProducto(i)">X</span>
+                  </p>
+              </div>
+              <div class="col">
+                  <input class="form-control" (keyup)="actualizar($event)" (change)="actualizar($event)"
+                      type="number" min="0" [(ngModel)]="product.qty"
+                      [ngModelOptions]="{standalone: true}">
+              </div>
+              <div class="col-2">
+                  <input class="form-control" (keyup)="actualizar($event)" (change)="actualizar($event)"
+                      type="number" min="0" [(ngModel)]="product.unitValue"
+                      [ngModelOptions]="{standalone: true}">
+              </div>
+              <div class="col">
+                  <input class="form-control" (keyup)="actualizar($event)" (change)="actualizar($event)"
+                      type="number" min="0" max="100" [(ngModel)]="product.discount"
+                      [ngModelOptions]="{standalone: true}">
+              </div>
+              <div class="col">
+                  <input class="form-control" (keyup)="actualizar($event)" (change)="actualizar($event)"
+                      type="number" min="0" max="100" [(ngModel)]="product.discount2"
+                      [ngModelOptions]="{standalone: true}">
+              </div>
+              <div class="col">
+                  <input class="form-control" type="number" readonly [(ngModel)]="product.beforeTax"
+                      [ngModelOptions]="{standalone: true}"
+                      value="{{ this.Math.round( ( product.qty * product.unitValue ) * ( 1 - ( product.discount / 100 ) ) * ( 1 - ( product.discount2 / 100 ) ) ) }}">
+              </div>
+              <div class="col">
+                  <input class="form-control" type="number" readonly [(ngModel)]="product.withTax"
+                      [ngModelOptions]="{standalone: true}"
+                      value="{{ this.Math.round( 1.19 * ( product.qty * product.unitValue ) * ( 1 - ( product.discount / 100 ) ) * ( 1 - ( product.discount2 / 100 ) ) ) }}">
+              </div>
+              <div class="col">
+                  <input class="form-control" type="number" readonly [(ngModel)]="product.withTaxUnit"
+                      [ngModelOptions]="{standalone: true}"
+                      value="{{ this.Math.round(( 1.19 * ( product.qty * product.unitValue ) * ( 1 - ( product.discount / 100 ) ) * ( 1 - ( product.discount2 / 100 ) ) ) / product.qty ) }}">
+              </div>
+          </div>
+      </div>
+      <div class="col-12" *ngIf="product.productos && product.productos.length > 0">
+          <div class="row" *ngFor="let producto of product.productos; trackBy: trackByProductId; let index = index">
+              <div class="col"></div>
+              <div class="col-3">
+                  <p>
+                      <strong>{{ index + 1 }}</strong>
+                      - {{ producto.productName }}
+                  </p>
+              </div>
+              <div class="col">
+                  <input class="form-control"
+                      type="number" min="0" [(ngModel)]="producto.qty"
+                      [ngModelOptions]="{standalone: true}">
+              </div>
+              <div class="col-2">
+                  <input class="form-control"
+                      type="number" min="0" [(ngModel)]="producto.unitValue"
+                      [ngModelOptions]="{standalone: true}">
+              </div>
+              <div class="col">
+                  <input class="form-control"
+                      type="number" min="0" max="100" [(ngModel)]="producto.discount"
+                      [ngModelOptions]="{standalone: true}">
+              </div>
+              <div class="col">
+                  <input class="form-control"
+                      type="number" min="0" max="100" [(ngModel)]="producto.discount2"
+                      [ngModelOptions]="{standalone: true}">
+              </div>
+              <div class="col">
+                  <input class="form-control" type="number" readonly [(ngModel)]="producto.beforeTax"
+                      [ngModelOptions]="{standalone: true}"
+                      value="{{ this.Math.round( ( producto.qty * producto.unitValue ) * ( 1 - ( producto.discount / 100 ) ) * ( 1 - ( producto.discount2 / 100 ) ) ) }}">
+              </div>
+              <div class="col">
+                  <input class="form-control" type="number" readonly [(ngModel)]="producto.withTax"
+                      [ngModelOptions]="{standalone: true}"
+                      value="{{ this.Math.round( 1.19 * ( producto.qty * producto.unitValue ) * ( 1 - ( producto.discount / 100 ) ) * ( 1 - ( producto.discount2 / 100 ) ) ) }}">
+              </div>
+              <div class="col">
+                  <input class="form-control" type="number" readonly [(ngModel)]="producto.withTaxUnit"
+                      [ngModelOptions]="{standalone: true}"
+                      value="{{ this.Math.round(( 1.19 * ( producto.qty * producto.unitValue ) * ( 1 - ( producto.discount / 100 ) ) * ( 1 - ( producto.discount2 / 100 ) ) ) / producto.qty ) }}">
+              </div>
+          </div>
+      </div>
+
+  </div>
+</div>
+
+<div>
+  <div>
+    <div>
+      <input #searchProd type="text" class="form-control" placeholder="Buscar Productos por Referencia"
+        [(ngModel)]="productSearch" [ngModelOptions]="{standalone: true}">
+      <ul #suggestionsProducts [style.display]=" productosEncontrados.length> 0 ? 'block' : 'none'">
+        <li *ngFor="let producto of productosEncontrados">
+          {{ producto.caracteristicas.referencia }} - {{ producto.nombre }}
+          <button type="button" class="btn btn-link" (click)="elegirProducto(producto)">Elegir Producto</button>
+        </li>
+      </ul>
+    </div>
+    <br>
+    <div class="container">
+      <div class="row">
+        <div class="col-6"></div>
+        <div class="col-4">
+          <div class="form-group row">
+            <label for="" class="col-6 text-right">
+              <h5>Total Bruto:</h5>
+            </label>
+            <div class="col-5">
+              <input class="form-control" type="number" readonly [(ngModel)]="grossTotal"
+                [ngModelOptions]="{standalone: true}">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6"></div>
+        <div class="col-4">
+          <div class="form-group row">
+            <label for="" class="col-6 text-right">
+              <h5>Descuentos:</h5>
+            </label>
+            <div class="col-5">
+              <input class="form-control" type="number" readonly [(ngModel)]="discounts"
+                [ngModelOptions]="{standalone: true}">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6"></div>
+        <div class="col-4">
+          <div class="form-group row">
+            <label for="" class="col-6 text-right">
+              <h5>Subtotal:</h5>
+            </label>
+            <div class="col-5">
+              <input class="form-control" type="number" readonly [(ngModel)]="subtotal"
+                [ngModelOptions]="{standalone: true}">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6"></div>
+        <div class="col-4">
+          <div class="form-group row">
+            <label for="" class="col-6 text-right">
+              <h5>Iva:</h5>
+            </label>
+            <div class="col-5">
+              <input class="form-control" type="number" readonly [(ngModel)]="iva"
+                [ngModelOptions]="{standalone: true}">
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <hr> -->
+      <div class="row">
+        <div class="col-6"></div>
+        <div class="col-4">
+          <div class="form-group row">
+            <label for="" class="col-6 text-right">
+              <h5>Total Neto:</h5>
+            </label>
+            <div class="col-5">
+              <input class="form-control" type="number" readonly [(ngModel)]="total"
+                [ngModelOptions]="{standalone: true}">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary" (click)="prueba()">Submit</button>
+</div>

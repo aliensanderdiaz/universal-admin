@@ -1,0 +1,29 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Arbol Categorías 2</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group mr-2">
+          <button routerLink="/categorias" class="btn btn-sm btn-outline-secondary">Categorías</button>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  <div *ngFor="let categoria of arbol">
+    <h1>{{ categoria.nombre }}</h1>
+    <hr>
+    <div *ngFor="let categoriaHija of categoria.children">
+      <h3>{{ categoria.nombre }} - {{ categoriaHija.nombre }}</h3>
+      <p *ngFor="let detallesHija of categoriaHija.detalles">
+        {{ detallesHija[0] }}:
+        <span *ngFor="let opcion of detallesHija[2]" class="badge badge-secondary mr-3">{{ opcion }}</span>
+      </p>
+      <div *ngFor="let categoriaNieta of categoriaHija.children">
+          <h5>{{ categoria.nombre }} - {{ categoriaHija.nombre }} - {{ categoriaNieta.nombre }}</h5>
+          <p *ngFor="let detallesNieta of categoriaNieta.detalles">
+            {{ detallesNieta[0] }}:
+            <span *ngFor="let opcion of detallesNieta[2]" class="badge badge-secondary mr-3">{{ opcion }}</span>
+          </p>
+      </div>
+    </div>
+  </div>
+</div>

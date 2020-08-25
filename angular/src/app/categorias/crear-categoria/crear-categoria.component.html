@@ -1,0 +1,150 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Crear Categoría</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/categorias" class="btn btn-sm btn-outline-secondary">Categorías</button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <form (submit)="crearCategoria()">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Nombre</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="Nombre de la Categoría" name="nombre" [(ngModel)]="nombre">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Padre</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="Buscar..." name="parent" [(ngModel)]="parent.nombre" readonly (click)="buscarParent = true">
+                </div>
+            </div>
+
+            <div [hidden]="!buscarParent">
+                <div class="input-group mb-3">
+                    <input #inputCategoria type="text" class="form-control" placeholder="Buscar Categoria">
+                    <div class="input-group-append">
+                        <span class="input-group-text pointer" (click)="buscarParent = false">x</span>
+                    </div>
+                </div>
+                <ul [style.display]="categorias.length> 0 ? 'block' : 'none'">
+                    <li *ngFor="let categoria of categorias">
+                            <span>{{ categoria.parent && categoria.parent.parent ? categoria.parent.parent.nombre : ''}} - {{ categoria.parent ? categoria.parent.nombre : ''}} - {{ categoria.nombre }}</span>
+                        <button type="button" class="btn btn-link" (click)="elegirCategoria(categoria)">Elegir Categoría</button>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- <div *ngIf="detallesGlobal.length > 0">
+                <h4>Detalles</h4>
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let detalle of detallesGlobal">
+                        {{ detalle[0] }}
+                        <ng-container *ngIf="detalle[2] && !detalle[4]">
+                            <span *ngFor="let opcion of detalle[2]" class="badge badge-primary badge-pill">{{ opcion }}</span>
+                        </ng-container>
+                        <ng-container *ngIf="detalle[3]">
+                            <span *ngFor="let unidad of detalle[3]" class="badge badge-secondary badge-pill">{{ unidad }}</span>
+                        </ng-container>
+                        <ng-container *ngIf="detalle[4]">
+                            <span *ngFor="let opcion of detalle[2]" class="badge badge-success badge-pill">{{ opcion }}</span>
+                        </ng-container>
+                    </li>
+                </ul>
+            </div> -->
+
+            <hr>
+
+            <!-- <p>
+                *Agrega detalles solo si es una categoría principal.
+                <button type="button" class="btn btn-link" (click)="agregarDetalle = true">
+                    Quiero agregar
+                </button>
+            </p> -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <div class="col">
+        <div *ngIf="agregarDetalle">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Detalle</span>
+                </div>
+                <input type="text" class="form-control" placeholder="Detalle" name="detalle" [(ngModel)]="detalle">
+                <div class="input-group-append">
+                    <span class="input-group-text pointer" (click)="agregarDetalle = false">x</span>
+                </div>
+            </div>
+
+            <div *ngIf="mostrarBotones">
+                <button type="button" class="btn btn-link" (click)="mostrarOpciones()">
+                    Quiero agregar opciones a este detalle.
+                </button>
+                <!-- <button type="button" class="btn btn-link" (click)="mostrarUnidades()">
+                    Quiero agregar unidades a este detalle.
+                </button> -->
+            </div>
+            <div *ngIf="agregarOpciones">
+                <div>
+                    <div class="row">
+
+                        <div class="col">
+
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" [(ngModel)]="opcionesMultiples">
+                                    </div>
+                                </div>
+                                <input type="text" readonly class="form-control" placeholder="Multiple">
+                            </div>
+
+                        </div>
+
+                        <div class="col">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <input type="checkbox" [(ngModel)]="filtroImportante">
+                                    </div>
+                                </div>
+                                <input type="text" readonly class="form-control" placeholder="Filtro">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div *ngIf="opcionesParcial.length > 0">
+                    <ul class="list-inline">
+                        <li class="list-inline-item" *ngFor="let opc of opcionesParcial">- {{ opc }}</li>
+                    </ul>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Opción" name="opcion" [(ngModel)]="opcion">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" (click)="agregarOpcionParcial()">+</button>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="agregarUnidades">
+                <div *ngIf="unidadesParcial.length > 0">
+                    <ul class="list-inline">
+                        <li class="list-inline-item" *ngFor="let uni of unidadesParcial">- {{ uni }}</li>
+                    </ul>
+                </div>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Unidad" name="unidad" [(ngModel)]="unidad">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" (click)="agregarUnidadParcial()">+</button>
+                    </div>
+                </div>
+            </div>
+            <button type="button" class="btn btn-secondary" (click)="agregarDetalleACategoria()">Agregar Detalle</button>
+        </div>
+    </div>
+</div>

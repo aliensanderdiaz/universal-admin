@@ -1,0 +1,40 @@
+<div class="container-fluid">
+  <div class="row">
+    <h1>Clasificación de Categorías</h1>
+  </div>
+  <hr>
+  <div class="row" *ngIf="categorias2">
+    <div class="col">
+      <div class="row" *ngFor="let categoria of categorias2">
+        <div class="col">
+          <div class="row">
+            {{ categoria.nombre }}
+          </div>
+        </div>
+        <div class="col">
+          <div class="row" *ngFor="let categoria2 of categoria.children">
+            <div class="col">
+              <div class="row">
+                {{ categoria2.nombre }}
+              </div>
+            </div>
+            <div class="col">
+              <div class="row" *ngFor="let categoria3 of categoria2.children">
+                  <div class="col">
+                      <div class="row">
+                        {{ categoria3.nombre }}
+                      </div>
+                    </div>
+                    <div class="col">
+                      <div class="row" *ngFor="let categoria4 of categoria3.children">
+                        {{ categoria4.nombre }}
+                      </div>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

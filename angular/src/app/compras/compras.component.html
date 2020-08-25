@@ -1,0 +1,94 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Compras</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/compras/crear-compra" class="btn btn-sm btn-outline-secondary">Crear</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-3">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Desde</span>
+                </div>
+                <input type="date" class="form-control" [(ngModel)]="desde">
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="basic-addon1">Hasta</span>
+                </div>
+                <input type="date" class="form-control" [(ngModel)]="hasta">
+            </div>
+        </div>
+        <div class="col-4">
+            <div [hidden]="proveedorElegido">
+                <input type="text" #searchSup class="form-control" placeholder="Buscar Nombre Proveedor">
+                <ul #suggestionsSuppliers [style.display]="proveedoresEncontrados.length > 0 ? 'block' : 'none'">
+                    <li *ngFor="let proveedor of proveedoresEncontrados">
+                        {{ proveedor.primerNombre }}
+                        <button type="button" class="btn btn-link" (click)="elegirProveedor(proveedor)">Elegir
+                            Proveedor</button>
+                    </li>
+                </ul>
+            </div>
+            <div *ngIf="proveedorElegido">
+                <div class="row">
+                    <div class="col-10">
+                        <input type="text" readonly class="form-control" value="{{ proveedorElegido.primerNombre }}">
+                    </div>
+                    <div class="col-1">
+                        <button type="button" class="btn btn-link" (click)="proveedorElegido = null">X</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-2">
+            <button type="button" class="btn btn-primary" (click)="filtrarCompras()">Buscar</button>
+        </div>
+    </div>
+
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <!-- <th>#</th> -->
+                <th>No. Factura</th>
+                <th>Fecha Proveedor</th>
+                <th>Identificación</th>
+                <th>Proveedor</th>
+                <th>Total</th>
+                <th>Detalles</th>
+                <!-- <th>Editar</th>
+                <th>Eliminar</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let invoice of invoices; let i = index">
+                <!-- <td>{{ i + 1 }}</td> -->
+                <td>{{ invoice.supplierNumber }}</td>
+                <td>{{ invoice.supplierDate | date:"dd/MM/yyyy" }}</td>
+                <td>{{ invoice.supplier.numeroId }}</td>
+                <td *ngIf="invoice.supplier.tipoId === 'nit'">{{ invoice.supplier.primerNombre }}</td>
+                <td *ngIf="invoice.supplier.tipoId === 'cc'">{{ invoice.supplier.primerNombre }}
+                    {{ invoice.supplier.segundoNombre }} {{ invoice.supplier.apellidos }}</td>
+                <td>{{ invoice.total | currency}}</td>
+                <td><a routerLink="/compras/compra/{{ invoice._id }}" class="badge badge-info">Detalles</a></td>
+                <!-- <td><a routerLink="/" class="badge badge-info">Editar</a></td>
+                <td><span class="badge badge-danger pointer" (click)="deleteInvoice(invoice._id)">Eliminar</span></td> -->
+            </tr>
+        </tbody>
+    </table>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col"></div>
+        <div class="col">
+            <h3>Total: {{ total | currency }}</h3>
+        </div>
+    </div>
+</div>

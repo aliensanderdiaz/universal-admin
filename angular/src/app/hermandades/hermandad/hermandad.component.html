@@ -1,0 +1,56 @@
+<div class="container">
+    <div class="row">
+      <h3 *ngIf="hermandad">
+        {{ hermandad.nombre }}
+      </h3>
+    </div>
+    <hr>
+
+  
+    <!-- <div *ngIf="hermandad && hermandad.productos && hermandad.productos.length > 0">
+      <div class="row">
+        <div class="col-6">Nombre</div>
+        <div class="col-3">{{ hermandad.propiedades[0].valor }}</div>
+        <div class="col-3">{{ hermandad.propiedades[1].valor }}</div>
+      </div>
+      <hr>
+      <div class="row" *ngFor="let producto of hermandad.productos; let i = index">
+        <div class="col-6">{{ producto.producto.nombre }}</div>
+        <div class="col-3">{{ producto.detalles.gas }}</div>
+        <div class="col-3">{{ producto.detalles.quemador }}</div>
+      </div>
+  
+    </div> -->
+
+
+
+
+
+    <div *ngIf="hermandad && hermandad.productos && hermandad.productos.length > 0">
+        <div class="row">
+          <div class="col-4">Nombre</div>
+          <div class="col-2" *ngFor="let propiedad of hermandad.propiedades">{{ propiedad.valor }}</div>
+        </div>
+
+        <hr>
+        <div class="row border-bottom" *ngFor="let producto of hermandad.productos">
+    
+          <div class="col-4">
+            {{ producto.producto.nombre }}</div>
+    
+          <div class="col-2" *ngFor="let propiedad of hermandad.propiedades">
+            {{ producto['detalles'][propiedad.codigo] }}
+          </div>
+    
+        </div>
+
+        <hr>
+
+        <div class="row">
+          <div class="col">
+            <button class="btn btn-primary btn-block" (click)="hacerFor()">Hacer For</button>
+          </div>
+        </div>
+    
+      </div>
+  </div>

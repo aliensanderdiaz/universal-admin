@@ -1,0 +1,32 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Historico Producto</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <button routerLink="/productos" class="btn btn-sm btn-outline-secondary">Productos</button>
+    </div>
+  </div>
+</div>
+
+
+<div class="container" *ngIf="producto && producto.historico && producto.historico.length > 0">
+  <h3>{{ producto.nombre }}</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Fecha</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Valor Unidad</th>
+        <th scope="col">Ver Factura</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let historico of producto.historico">
+        <td>{{ historico.fecha | date }}</td>
+        <td>{{ historico.cantidad }}</td>
+        <td>{{ historico.precio }}</td>
+        <td *ngIf="historico.tipo === 'Compra'"><button type="button" class="btn btn-primary"
+            (click)="irACompra(historico.compra)">VER</button></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

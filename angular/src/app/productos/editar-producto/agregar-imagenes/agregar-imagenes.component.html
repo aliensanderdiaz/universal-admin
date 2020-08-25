@@ -1,0 +1,30 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Cargar Imágenes al Producto</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button *ngIf="productoId" routerLink="/productos/producto/{{productoId}}" class="btn btn-sm btn-outline-secondary">Volver</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="input-group mb-3">
+    <div class="custom-file">
+        <input #productosImg type="file" class="custom-file-input" (change)="loadImages($event)" accept="image/*" multiple>
+        <label class="custom-file-label">Elegir Archivos...</label>
+    </div>
+</div>
+
+<app-custom-canvas *ngFor="let dato of coleccion" [image]="dato" [carpeta]="this.productoId"></app-custom-canvas>
+
+<br><br>
+<div *ngIf="servicioURL.obtenerUrls() && servicioURL.obtenerUrls().length > 0">
+    <div *ngFor="let url of servicioURL.obtenerUrls(); let i = index" (click)="elegir(i)" [style.background-color]="i == pp-1 ? 'Pink' : 'White'">
+        <p>{{ url }}</p>
+        <img src="{{ url }}" alt="" width="100px">
+    </div>
+</div>
+<br><br>
+<div *ngIf="this.servicioURL.urlFirebase.length > 0">
+    <button type="button" class="btn btn-primary" (click)="crearArrayImagenes()" *ngIf="this.coleccion.length === this.servicioURL.urlFirebase.length">Agregar Imagenes al Producto</button>
+</div>

@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Ventas</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/ventas/crear-venta" class="btn btn-sm btn-outline-secondary">Crear</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>#</th>
+                <th>Cliente</th>
+                <th>Total</th>
+                <th>Detalles</th>
+                <th>Crear XML</th>
+                <!-- <th>Editar</th> -->
+                <!-- <th>Eliminar</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let venta of ventas; let i = index">
+                <td>{{ venta.fechaDeFactura | date }}</td>
+                <td>{{ venta.numeroDeFactura }}</td>
+                <td>{{ venta.clienteId.nombre }}</td>
+                <td>{{ venta.total }}</td>
+                <td><a routerLink="/ventas/venta/{{ venta._id }}" class="badge badge-info">Detalles</a></td>
+                <td><button (click)="crearXML(venta._id)" class="badge badge-info pointer">Crear XML</button></td>
+
+                <!-- <td><a routerLink="/" class="badge badge-info">Editar</a></td> -->
+                <!-- <td><span class="badge badge-danger pointer" (click)="deleteventa(venta._id)">Eliminar</span></td> -->
+            </tr>
+        </tbody>
+    </table>
+</div>

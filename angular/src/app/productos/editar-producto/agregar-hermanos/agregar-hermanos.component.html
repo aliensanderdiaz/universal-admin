@@ -1,0 +1,43 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Agregar Hermanos</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button *ngIf="productoId" routerLink="/productos/producto/{{productoId}}" class="btn btn-sm btn-outline-secondary">Volver</button>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="!cargando">
+    <h5>{{ producto.nombre }}</h5>
+    <hr>
+    <div *ngIf="hermanosDB && hermanosDB.length > 0">
+        <h3>Productos Agregados</h3>
+        <ul class="list-group">
+            <li *ngFor="let item of hermanosDB">{{ item.nombre }}</li>
+        </ul>
+    </div>
+    <hr>
+    <div *ngIf="hermanos.length > 0">
+        <h3>Productos por Agregar</h3>
+        <ul class="list-group">
+            <li class="list-group-item" *ngFor="let item of hermanos">{{ item.nombre }}</li>
+        </ul>
+    </div>
+    <hr>
+</div>
+<div class="container">
+    <h3>Buscar Productos</h3>
+    <div class="input-group">
+        <input #inputProducto type="text" class="form-control">
+    </div>
+    <ul [style.display]="productosFiltrados.length> 0 ? 'block' : 'none'">
+        <li *ngFor="let producto of productosFiltrados">
+            <span>{{ producto.nombre }}</span>
+            <button type="button" class="btn btn-link" (click)="elegirProducto(producto)">Elegir Producto</button>
+        </li>
+    </ul>
+</div>
+<hr>
+<div class="container">
+    <button type="button" class="btn btn-primary" (click)="guardarProducto()">Guardar</button>
+</div>

@@ -1,0 +1,146 @@
+<div class="container-fluid">
+  <div class="row">
+    <h1>PRODUCTOS</h1>
+  </div>
+  <div class="row" *ngIf="marcas.length > 0">
+    <div class="col">
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text">Marca</label>
+        </div>
+        <select class="custom-select" [(ngModel)]="marcaElegidaId">
+          <option *ngFor="let marca of marcas" [value]="marca._id">{{ marca.nombre }}</option>
+        </select>
+      </div>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text">Tipo</label>
+        </div>
+        <select class="custom-select" [(ngModel)]="etiqueta">
+          <option value="Producto">Producto</option>
+          <option value="Repuesto">Repuesto</option>
+          <option value="Combo">Combo</option>
+        </select>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-lg btn-block mb-3" (click)="buscar()">Buscar</button>
+
+
+
+
+    </div>
+  </div>
+
+  <div class="row" [hidden]="!productos || productos.length === 0">
+    <div class="col">
+      <div class="input-group mb-3">
+        <input #nombreProducto type="text" class="form-control" placeholder="Nombre del Producto">
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="productosFiltrados.length > 0">
+
+    <div class="row">
+      <div class="col-1">
+        <h5>
+          Imagen
+        </h5>
+      </div>
+      <div class="col-4 pointer" (click)="ordenar('nombre')">
+        <h5>
+          Nombre
+        </h5>
+      </div>
+      <div class="col-1 pointer" (click)="ordenar('referencia')">
+        <h5>
+          Referencia
+        </h5>
+      </div>
+      <div class="col-1 pointer" (click)="ordenar('modelo')">
+        <h5>
+          Modelo
+        </h5>
+      </div>
+      <div class="col-1 pointer" (click)="ordenar('categoria')">
+        <h5>
+          Categoría
+        </h5>
+      </div>
+      <div class="col-1 pointer" (click)="ordenar('categoria_padre')">
+        <h5>
+          Cat. Padre
+        </h5>
+      </div>
+      <div class="col-1">
+        <h5>
+
+          Detalles
+        </h5>
+      </div>
+      <div class="col-1">
+        <h5>
+          Test
+        </h5>
+      </div>
+    </div>
+
+    <div class="row item-producto" *ngFor="let producto of productosFiltrados; index as i">
+      <div class="col-1" *ngIf="producto.pictures && producto.pictures.large && producto.pictures.large.length > 0">
+        <img [src]="producto.pictures.large[ producto.pictures.pp - 1 ]" alt="Producto Img">
+      </div>
+      <div class="col-1" *ngIf="!producto.pictures || !producto.pictures.large || producto.pictures.large.length === 0">
+      </div>
+      <div class="col-4" *ngIf="!producto.editar">
+        <p>
+          {{ producto.nombre }} - <span class="badge badge-primary pointer"
+            (click)="producto.editar = !producto.editar">Editar</span>
+        </p>
+      </div>
+      <div class="col-4" *ngIf="producto.editar">
+        <div class="input-group">
+          <textarea type="text" class="form-control" [(ngModel)]="producto.nombre"></textarea>
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button"
+              (click)="cambiarNombre(producto.nombre.trim(), producto._id, i)">Guardar</button>
+              <button class="btn btn-outline-danger" type="button"
+              (click)="producto.editar = !producto.editar">Cancelar</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-1">
+        <p>
+          {{ producto.caracteristicas.referencia }}
+        </p>
+      </div>
+      <div class="col-1">
+        <p>
+          {{ producto.caracteristicas.modelo }}
+        </p>
+      </div>
+      <div class="col-1">
+        <p>
+          {{ producto.categoria.nombre }}
+        </p>
+      </div>
+      <div class="col-1">
+        <p>
+          {{ producto.categoria_padre ? producto.categoria_padre.nombre: '' }}
+        </p>
+      </div>
+      <div class="col-1">
+        <p>
+          <a class="badge badge-secondary pointer" href="/productos/producto/{{ producto._id }}" target="_blank">Ver</a>
+        </p>
+      </div>
+      <div class="col-1">
+        <p>
+          <button class="btn btn-block btn-primary" (click)="test(producto)">Test</button>
+        </p>
+      </div>
+    </div>
+
+  </div>
+</div>

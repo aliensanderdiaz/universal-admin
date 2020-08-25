@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ nombreProducto }}</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+
+
+<div class="modal-body">
+  <div class="input-group mb-3" [hidden]="cargando">
+    <input #inputCategoria type="text" class="form-control" placeholder="Buscar Categoria">
+  </div>
+  <ul [style.display]="categorias.length> 0 ? 'block' : 'none'">
+    <li *ngFor="let categoria of categorias">
+      <span>
+        {{ categoria.parent && categoria.parent.parent && categoria.parent.parent.parent ? categoria.parent.parent.parent.nombre : ''}} - 
+        {{ categoria.parent && categoria.parent.parent ? categoria.parent.parent.nombre : ''}} - 
+        {{ categoria.parent ? categoria.parent.nombre : ''}} - 
+        <strong>{{ categoria.nombre }}</strong>
+      </span>
+      <button type="button" class="btn btn-link" (click)="elegirCategoria(categoria._id, categoria.nombre)">Elegir Categoría</button>
+    </li>
+  </ul>
+
+</div>
+
+
+
+<div class="modal-footer">
+  <!-- <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  <button class="btn btn-primary" (click)="saveTodo()">Save</button> -->
+</div>

@@ -1,0 +1,52 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Busqueda de Productos</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/productos" class="btn btn-sm btn-outline-secondary">Productos</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Categoría</span>
+                </div>
+                <input #inputCategoria type="text" class="form-control" placeholder="Buscar por nombre">
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row" *ngIf="categoriasFiltradas.length > 0">
+        <div class="col">
+            <ul [style.display]="categoriasFiltradas.length> 0 ? 'block' : 'none'">
+                <li *ngFor="let categoria of categoriasFiltradas">
+                    <span>{{ categoria.abuelo ? categoria.abuelo.nombre : ''}} - {{ categoria.parent ? categoria.parent.nombre : ''}} - {{ categoria.nombre }}</span>
+                    <button type="button" class="btn btn-link" (click)="elegirCategoria(categoria)">Elegir Categoría</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" *ngIf="productos.length > 0">
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">First</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let producto of productos">
+                        <th>{{ producto.nombre }}</th>
+                        <td class="pointer" (click)="irAProducto(producto._id)">
+                            <span class="badge badge-info">Detalles</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

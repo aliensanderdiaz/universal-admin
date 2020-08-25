@@ -1,0 +1,143 @@
+    <div *ngIf="productosFiltrados.length > 0">
+
+        <div class="row">
+            <div class="col-1">
+                <h5>
+                    Imagen
+                </h5>
+            </div>
+            <div class="col-5 pointer" (click)="ordenar('nombre')">
+                <h5>
+                    Nombre
+                </h5>
+            </div>
+            <div class="col-2 pointer" *ngIf="opciones.includes('Marca')" (click)="ordenar('marca')">
+                <h5>
+                    Marca
+                </h5>
+            </div>
+            <div class="col-2 pointer" *ngIf="opciones.includes('Referencia')" (click)="ordenar('referencia')">
+                <h5>
+                    Referencia
+                </h5>
+            </div>
+            <div class="col-2 pointer" *ngIf="opciones.includes('Modelo')" (click)="ordenar('modelo')">
+                <h5>
+                    Modelo
+                </h5>
+            </div>
+            <div class="col-2 pointer" *ngIf="opciones.includes('Categoría')" (click)="ordenar('categoria')">
+                <h5>
+                    Categoría
+                </h5>
+            </div>
+            <div class="col-2 pointer" *ngIf="opciones.includes('EAN13')" (click)="ordenar('ean13')">
+                <h5>
+                    EAN13
+                </h5>
+            </div>
+            <div class="col-2 pointer" *ngIf="opciones.includes('EAN14')" (click)="ordenar('ean14')">
+                <h5>
+                    EAN14
+                </h5>
+            </div>
+            <!-- <div class="col-1 pointer" (click)="ordenar('categoria_padre')">
+                <h5>
+                  Cat. Padre
+                </h5>
+              </div> -->
+            <!-- <div class="col-1">
+                <h5>
+        
+                  Detalles
+                </h5>
+              </div> -->
+            <!-- <div class="col-1">
+                <h5>
+                  Test
+                </h5>
+              </div> -->
+        </div>
+
+
+
+
+        <div class="row item-producto" *ngFor="let producto of productosFiltrados; index as i">
+            <div class="col-1"
+                *ngIf="producto.pictures && producto.pictures.large && producto.pictures.large.length > 0">
+                <img [src]="producto.pictures.large[ producto.pictures.pp - 1 ]" alt="Producto Img">
+            </div>
+            <div class="col-1"
+                *ngIf="!producto.pictures || !producto.pictures.large || producto.pictures.large.length === 0">
+            </div>
+            <div class="col-5" *ngIf="!producto.editar">
+                <p>
+                    <a href="/productos/producto/{{ producto._id }}" target="_blank">{{ producto.nombre }}</a>
+                    <!-- - <span class="badge badge-primary pointer"
+                    (click)="producto.editar = !producto.editar">Editar</span> -->
+                </p>
+            </div>
+            <div class="col-5" *ngIf="producto.editar">
+                <div class="input-group">
+                    <textarea type="text" class="form-control" [(ngModel)]="producto.nombre"></textarea>
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button"
+                            (click)="cambiarNombre(producto.nombre.trim(), producto._id, i)">Guardar</button>
+                        <button class="btn btn-outline-danger" type="button"
+                            (click)="producto.editar = !producto.editar">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-2" *ngIf="opciones.includes('Marca')">
+                <p>
+                    {{ producto.marca.nombre }}
+                </p>
+            </div>
+            <div class="col-2" *ngIf="opciones.includes('Referencia')">
+                <p>
+                    {{ producto.caracteristicas.referencia }}
+                </p>
+            </div>
+            <div class="col-2" *ngIf="opciones.includes('Modelo')">
+                <p>
+                    {{ producto.caracteristicas.modelo }}
+                </p>
+            </div>
+            <div class="col-2" *ngIf="opciones.includes('Categoría')">
+                <p>
+                    {{ producto.categoria.nombre }}
+                </p>
+            </div>
+
+            <div class="col-2" *ngIf="opciones.includes('EAN13')">
+                <p>
+                    {{ producto.caracteristicas.ean13 }}
+                </p>
+            </div>
+
+            <div class="col-2" *ngIf="opciones.includes('EAN14')">
+                <p>
+                    {{ producto.caracteristicas.ean14 }}
+                </p>
+            </div>
+
+
+
+            <!-- <div class="col-1">
+                <p>
+                  {{ producto.categoria_padre ? producto.categoria_padre.nombre: '' }}
+                </p>
+              </div> -->
+            <!-- <div class="col-1">
+                <p>
+                  <a class="badge badge-secondary pointer" href="/productos/producto/{{ producto._id }}" target="_blank">ver</a>
+                </p>
+              </div> -->
+            <!-- <div class="col-1">
+                <p>
+                  <button class="btn btn-block btn-primary" (click)="test(producto)">Test</button>
+                </p>
+              </div> -->
+        </div>
+
+    </div>

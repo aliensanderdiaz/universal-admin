@@ -1,0 +1,397 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Productos</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <button routerLink="/productos/crear-pedido" class="btn btn-sm btn-outline-secondary">Crear Pedido</button>
+      <button routerLink="/productos/crear-producto" class="btn btn-sm btn-outline-secondary">Crear</button>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid">
+  <div class="row" hidden>
+    <div class="col">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Nombre</span>
+        </div>
+        <input #inputProductoPorNombre type="text" class="form-control" placeholder="Buscar">
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Modelo</span>
+        </div>
+        <input #inputProductoPorModelo type="text" class="form-control" placeholder="Buscar">
+      </div>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Referencia</span>
+        </div>
+        <input #inputProductoPorReferencia type="text" class="form-control" placeholder="Buscar">
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row" *ngIf="cargando && totalProductos === 0">
+    <p class="text-center">Espera... se están cargando los productos</p>
+  </div>
+
+  <div class="row" *ngIf="!cargando && totalProductos > 0">
+    <p class="text-center">Ya se cargaron {{ totalProductos }} productos.</p>
+  </div>
+
+  <div class="row" [hidden]="cargando">
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <select class="custom-select" [(ngModel)]="tipoBusqueda">
+          <option selected value="nombre">Nombre</option>
+          <option value="modelo">Modelo</option>
+          <option value="referencia">Referencia</option>
+        </select>
+      </div>
+      <input #inputBusqueda type="text" class="form-control" placeholder="Buscar">
+      <!-- <div class="input-group-append">
+                <button class="btn btn-secondary" type="button">Buscar</button>
+            </div> -->
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <ul class="list-inline">
+        <li class="list-inline-item" *ngFor="let opcion of opciones">
+          {{ opcion }} <span class="badge badge-danger pointer" (click)="quitarOpcion(opcion)"> - </span>
+        </li>
+      </ul>
+    </div>
+    <div class="col">
+      <ul class="list-inline">
+        <li class="list-inline-item" *ngFor="let opcion of otrasOpciones">
+          {{ opcion }} <span class="badge badge-primary pointer" (click)="agregarOpcion(opcion)"> + </span>
+        </li>
+      </ul>
+    </div>
+
+
+  </div>
+
+
+  <!-- <div class="row">
+        <div class="col">
+
+
+
+            <table class="table">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col">Tipo</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Modelo</th>
+                        <th scope="col">Referencia</th>
+                        <th scope="col">Ver</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let producto of productos">
+                        <td>{{ producto.etiqueta }}</td>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.caracteristicas.modelo }}</td>
+                        <td>{{ producto.caracteristicas.referencia }}</td>
+                        <td><a class="badge badge-secondary pointer" href="/productos/producto/{{ producto._id }}"
+                                target="_blank">Ver</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-info" *ngIf="desde > 0" (click)="cambiarDesde(-8)">&lt;&lt;
+                Anterior</button>
+            <button type="button" class="btn btn-info" *ngIf="desde + 8 < totalProductos"
+                (click)="cambiarDesde(+8)">Siguiente &gt;&gt;</button>
+
+        </div>
+    </div> -->
+
+
+
+
+  <div *ngIf="productosFiltrados.length > 0">
+
+    <div class="row">
+
+      <div class="col-1">
+        <h5>
+          Imagen
+        </h5>
+      </div>
+
+      <div class="col-5 pointer" (click)="ordenar('nombre')">
+        <h5>
+          Nombre
+        </h5>
+      </div>
+
+      <div class="col-2 pointer" *ngIf="opciones.includes('Marca')" (click)="ordenar('marca')">
+        <h5>
+          Marca
+        </h5>
+      </div>
+
+      <div class="col-2 pointer" *ngIf="opciones.includes('Modelo')" (click)="ordenar('modelo')">
+        <h5>
+          Modelo
+        </h5>
+      </div>
+
+      <div class="col-2 pointer" *ngIf="opciones.includes('Referencia')" (click)="ordenar('referencia')">
+        <h5>
+          Referencia
+        </h5>
+      </div>
+
+      <div class="col-2 pointer" *ngIf="opciones.includes('Categoría')" (click)="ordenar('categoria')">
+        <h5>
+          Categoría
+        </h5>
+      </div>
+
+      <div class="col-2 pointer" *ngIf="opciones.includes('EAN13')" (click)="ordenar('ean13')">
+        <h5>
+          EAN13
+        </h5>
+      </div>
+
+      <div class="col-2 pointer" *ngIf="opciones.includes('EAN14')" (click)="ordenar('ean14')">
+        <h5>
+          EAN14
+        </h5>
+      </div>
+
+      <div class="col-2 pointer" *ngIf="opciones.includes('Etiqueta')" (click)="ordenar('etiqueta')">
+        <h5>
+          Etiqueta
+        </h5>
+      </div>
+
+      <div class="col-2" *ngIf="opciones.includes('cmmf')">
+        <h5>
+          CMMF
+        </h5>
+      </div>
+      <!-- <div class="col-1 pointer" (click)="ordenar('categoria_padre')">
+                        <h5>
+                          Cat. Padre
+                        </h5>
+                      </div> -->
+      <!-- <div class="col-1">
+                        <h5>
+                
+                          Detalles
+                        </h5>
+                      </div> -->
+      <!-- <div class="col-1">
+                        <h5>
+                          Test
+                        </h5>
+                      </div> -->
+    </div>
+
+
+
+
+    <div class="row item-producto" *ngFor="let producto of productosFiltrados; index as i">
+
+      <div class="col-1" *ngIf="producto.pictures && producto.pictures.large && producto.pictures.large.length > 0">
+        <img [src]="producto.pictures.large[ producto.pictures.pp - 1 ]" alt="Producto Img">
+      </div>
+      <div class="col-1" *ngIf="!producto.pictures || !producto.pictures.large || producto.pictures.large.length === 0">
+      </div>
+
+      <div class="col-5" *ngIf="!producto.editarNombre">
+        <p>
+          <a href="/productos/producto/{{ producto._id }}" target="_blank">{{ producto.nombre }}</a>
+          - <span class="badge badge-primary pointer"
+            (click)="producto.editarNombre = !producto.editarNombre">Editar</span>
+        </p>
+      </div>
+
+      <div class="col-5" *ngIf="producto.editarNombre">
+        <div class="input-group row">
+          <textarea type="text" class="form-control" [(ngModel)]="producto.nombre"></textarea>
+        </div>
+        <div class="input-group row">
+          <button class="btn btn-outline-success col" type="button"
+            (click)="cambiarNombre(producto.nombre.trim(), producto._id, i)">+</button>
+          <button class="btn btn-outline-danger col" type="button"
+            (click)="producto.editarNombre = !producto.editarNombre">X</button>
+        </div>
+      </div>
+
+      <div class="col-2" *ngIf="opciones.includes('Marca') && !producto.editarMarca">
+        <p>
+          {{ producto.marca.nombre }} - <span class="badge badge-primary pointer"
+            (click)="producto.editarMarca = !producto.editarMarca">Editar</span>
+        </p>
+      </div>
+
+      <div class="col-2" *ngIf="opciones.includes('Marca') && producto.editarMarca">
+        <div class="input-group row">
+          <!-- <input type="" class="form-control" [(ngModel)]="producto.marca._id"> -->
+
+          <select class="custom-select" [(ngModel)]="producto.marca._id" (change)="crearMarcaTemp($event.target.value)">
+            <option *ngFor="let marca of marcas" [value]="marca._id">{{ marca.nombre }}</option>
+          </select>
+        </div>
+        <div class="input-group row">
+          <button class="btn btn-outline-success col" type="button"
+            (click)="cambiarMarca(producto.marca._id, producto.marca.nombre, producto._id, i)">+</button>
+          <button class="btn btn-outline-danger col" type="button"
+            (click)="producto.editarMarca = !producto.editarMarca">X</button>
+        </div>
+      </div>
+
+
+      <div class="col-2" *ngIf="opciones.includes('Modelo') && !producto.editarModelo">
+        <p>
+          {{ producto.caracteristicas.modelo }}
+          - <span class="badge badge-primary pointer"
+            (click)="producto.editarModelo = !producto.editarModelo">Editar</span>
+        </p>
+      </div>
+
+      <div class="col-2" *ngIf="opciones.includes('Modelo') && producto.editarModelo">
+        <div class="input-group row">
+          <input type="text" class="form-control" [(ngModel)]="producto.caracteristicas.modelo">
+        </div>
+        <div class="input-group row">
+          <button class="btn btn-outline-success col" type="button"
+            (click)="cambiarModelo(producto.caracteristicas.modelo.trim(), producto._id, i)">+</button>
+          <button class="btn btn-outline-danger col" type="button"
+            (click)="producto.editarModelo = !producto.editarModelo">X</button>
+        </div>
+      </div>
+
+
+      <div class="col-2" *ngIf="opciones.includes('Referencia') && !producto.editarReferencia">
+        <p>
+          {{ producto.caracteristicas.referencia }}
+          - <span class="badge badge-primary pointer"
+            (click)="producto.editarReferencia = !producto.editarReferencia">Editar</span>
+        </p>
+      </div>
+
+      <div class="col-2" *ngIf="opciones.includes('Referencia') && producto.editarReferencia">
+        <div class="input-group row">
+          <input type="text" class="form-control" [(ngModel)]="producto.caracteristicas.referencia">
+        </div>
+        <div class="input-group row">
+          <button class="btn btn-outline-success col" type="button"
+            (click)="cambiarReferencia(producto.caracteristicas.referencia.trim(), producto._id, i)">+</button>
+          <button class="btn btn-outline-danger col" type="button"
+            (click)="producto.editarReferencia = !producto.editarReferencia">X</button>
+        </div>
+      </div>
+
+      <div class="col-2" *ngIf="opciones.includes('Categoría')">
+        <p>
+          {{ producto.categoria.nombre }}
+          - <span class="badge badge-primary pointer"
+            (click)="mostrarModal(producto._id, producto.nombre, i)">Editar</span>
+        </p>
+      </div>
+
+      <div class="col-2" *ngIf="opciones.includes('EAN13') && !producto.editarEAN13">
+        <p>
+          {{ producto.caracteristicas.ean13 }}
+          - <span class="badge badge-primary pointer"
+            (click)="producto.editarEAN13 = !producto.editarEAN13">Editar</span>
+        </p>
+      </div>
+
+      <div class="col-2" *ngIf="opciones.includes('EAN13') && producto.editarEAN13">
+        <div class="input-group row">
+          <input type="text" class="form-control" [(ngModel)]="producto.caracteristicas.ean13">
+        </div>
+        <div class="input-group row">
+          <button class="btn btn-outline-success col" type="button"
+            (click)="cambiarEAN13(producto.caracteristicas.ean13.trim(), producto._id, i)">+</button>
+          <button class="btn btn-outline-danger col" type="button"
+            (click)="producto.editarEAN13 = !producto.editarEAN13">X</button>
+        </div>
+      </div>
+
+      <div class="col-2" *ngIf="opciones.includes('EAN14') && !producto.editarEAN14">
+        <p>
+          {{ producto.caracteristicas.ean14 }}
+          - <span class="badge badge-primary pointer"
+            (click)="producto.editarEAN14 = !producto.editarEAN14">Editar</span>
+        </p>
+      </div>
+
+      <div class="col-2" *ngIf="opciones.includes('EAN14') && producto.editarEAN14">
+        <div class="input-group row">
+          <input type="text" class="form-control" [(ngModel)]="producto.caracteristicas.ean14">
+        </div>
+        <div class="input-group row">
+          <button class="btn btn-outline-success col" type="button"
+            (click)="cambiarEAN14(producto.caracteristicas.ean14.trim(), producto._id, i)">+</button>
+          <button class="btn btn-outline-danger col" type="button"
+            (click)="producto.editarEAN14 = !producto.editarEAN14">X</button>
+        </div>
+      </div>
+
+
+      <div class="col-2" *ngIf="opciones.includes('Etiqueta') && !producto.editarEtiqueta">
+        <p>
+          {{ producto.etiqueta }}
+          - <span class="badge badge-primary pointer"
+            (click)="producto.editarEtiqueta = !producto.editarEtiqueta">Editar</span>
+        </p>
+      </div>
+
+      <div class="col-2" *ngIf="opciones.includes('Etiqueta') && producto.editarEtiqueta">
+        <div class="input-group row">
+          <!-- <input type="text" class="form-control" [(ngModel)]="producto.etiqueta"> -->
+
+          <select class="custom-select" [(ngModel)]="producto.etiqueta">
+            <option value="Producto">Producto</option>
+            <option value="Repuesto">Repuesto</option>
+            <option value="Combo">Combo</option>
+          </select>
+        </div>
+        <div class="input-group row">
+          <button class="btn btn-outline-success col" type="button"
+            (click)="cambiarEtiqueta(producto.etiqueta.trim(), producto._id, i)">+</button>
+          <button class="btn btn-outline-danger col" type="button"
+            (click)="producto.editarEtiqueta = !producto.editarEtiqueta">X</button>
+        </div>
+      </div>
+
+
+      <div class="col-2" *ngIf="opciones.includes('cmmf')">
+        <p>
+          {{ producto.cmmf.length }}
+          <span class="badge badge-primary pointer" (click)="editarCmmf(i)">Editar</span>
+        </p>
+      </div>
+
+
+      <!-- <div class="col-1">
+                        <p>
+                          {{ producto.categoria_padre ? producto.categoria_padre.nombre: '' }}
+                        </p>
+                      </div> -->
+      <!-- <div class="col-1">
+                        <p>
+                          <a class="badge badge-secondary pointer" href="/productos/producto/{{ producto._id }}" target="_blank">ver</a>
+                        </p>
+                      </div> -->
+      <!-- <div class="col-1">
+                        <p>
+                          <button class="btn btn-block btn-primary" (click)="test(producto)">Test</button>
+                        </p>
+                      </div> -->
+    </div>
+
+  </div>
+</div>

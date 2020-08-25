@@ -1,0 +1,268 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Detalle de Compra*</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/compras" class="btn btn-sm btn-outline-secondary">Compras</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="container-fluid" *ngIf="invoice">
+
+    <div class="row justify-content-end">
+        <div class="col-1">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
+                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item pointer"
+                    routerLink="/compras/editar-compra/{{ invoice._id }}" *ngIf="!invoice.completada">Editar</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item pointer"
+                    (click)="facturaCompletada(invoice._id)" *ngIf="!invoice.completada">Completar Factura</a>
+                    <a class="dropdown-item pointer"
+                    (click)="ejecutarHistorico(invoice._id)">Establecer Inventario</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+
+    <div class="row justify-content-around">
+        <div class="col-5">
+            <div class="row">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Fecha de Proveedor</span>
+                    </div>
+                    <input type="text" class="form-control" [value]="invoice.supplierDate | date" readonly>
+                </div>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="row" *ngIf="invoice.dueDate">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Fecha de Vencimiento</span>
+                    </div>
+                    <input type="text" class="form-control" [value]="invoice.dueDate | date" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row justify-content-around">
+        <div class="col-5">
+            <div class="row">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Proveedor</span>
+                    </div>
+                    <input *ngIf="invoice.supplier.tipoId === 'nit'" type="text" class="form-control"
+                        [value]="invoice.supplier.primerNombre" readonly>
+                    <input *ngIf="invoice.supplier.tipoId === 'cc'" type="text" class="form-control"
+                        [value]="invoice.supplier.primerNombre + invoice.supplier.segundoNombre + invoice.supplier.apellidos"
+                        readonly>
+                </div>
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="row">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">Factura Proveedor</span>
+                    </div>
+                    <input type="text" class="form-control" [value]="invoice.supplierNumber" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+
+
+
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-4">
+                        <h5>Producto</h5>
+                    </div>
+                    <div class="col">
+                        <h5>Cant</h5>
+                    </div>
+                    <div class="col-2">
+                        <h5>Vr Unit.</h5>
+                    </div>
+                    <div class="col">
+                        <h5>Desc1(%)</h5>
+                    </div>
+                    <div class="col">
+                        <h5>Desc2(%)</h5>
+                    </div>
+                    <div class="col">
+                        <h5>Neto</h5>
+                    </div>
+                    <div class="col">
+                        <h5>+Iva</h5>
+                    </div>
+                    <div class="col">
+                        <h5>+IvaUnit</h5>
+                    </div>
+                </div>
+                <div class="row" *ngFor="let product of invoice.products; trackBy: trackByProductId; let i = index">
+
+                    <div class="col-12">
+                        <div class="row">
+                            <div class="col-4">
+                                <p>
+                                    <strong>{{ i + 1 }}</strong>
+                                    - <a href="/compras/historico-compras/{{product.productId._id}}" target="_blank">{{product.productId.caracteristicas.referencia}}</a>
+                                    - {{ product.productId.nombre }}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>{{ product.qty }}</p>
+                            </div>
+                            <div class="col-2">
+                                <p>{{ product.unitValue | currency:undefined:'symbol-narrow':'1.2-2':'es-Co'  }}</p>
+                            </div>
+                            <div class="col">
+                                <p>{{ product.discount }}</p>
+                            </div>
+                            <div class="col">
+                                <p>{{ product.discount2 }}</p>
+                            </div>
+                            <div class="col">
+                                <p>{{ product.beforeTax | currency:undefined:'symbol-narrow':'1.2-2':'es-Co'  }}</p>
+                            </div>
+                            <div class="col">
+                                <p>{{ product.withTax | currency:undefined:'symbol-narrow':'1.2-2':'es-Co'  }}</p>
+                            </div>
+                            <div class="col">
+                                <p>{{ product.withTaxUnit | currency:undefined:'symbol-narrow':'1.2-2':'es-Co'  }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12" *ngIf="product.productos && product.productos.length > 0">
+                        <div class="row"
+                            *ngFor="let producto of product.productos; trackBy: trackByProductId; let index = index">
+                            <div class="col"></div>
+                            <div class="col-3">
+                                <p>
+                                    <strong>{{ index + 1 }}</strong>
+                                    - <a href="/compras/historico-compras/{{producto.productId._id}}" target="_blank">{{producto.productId.caracteristicas.referencia}}</a>
+                                    - {{ producto.productId.nombre }}
+                                </p>
+                            </div>
+                            <div class="col">
+                                <p>{{ producto.qty }}</p>
+                            </div>
+                            <div class="col-2">
+                                <p>{{ producto.unitValue }}</p>
+                            </div>
+                            <div class="col">
+                                <p>{{ producto.discount }}</p>
+                            </div>
+                            <div class="col">
+                                <p>{{ producto.discount2 }}</p>
+                            </div>
+                            <div class="col">
+                                <p>{{ producto.beforeTax }}</p>
+                            </div>
+                            <div class="col">
+                                <p>{{ producto.withTax | currency:'USD':'symbol':"1.0-2" }}</p>
+                            </div>
+                            <div class="col">
+                                <p>{{ producto.withTaxUnit | currency:'USD':'symbol':"1.0-2" }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="col-12">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label for="" class="col-6 text-right">
+                                <h5>Total Bruto:</h5>
+                            </label>
+                            <div class="col-5">
+                                {{ invoice.grossTotal | currency:'USD':'symbol':"1.0-2" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label for="" class="col-6 text-right">
+                                <h5>Descuentos:</h5>
+                            </label>
+                            <div class="col-5">
+                                {{ invoice.discounts | currency:'USD':'symbol':"1.0-2" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label for="" class="col-6 text-right">
+                                <h5>Subtotal:</h5>
+                            </label>
+                            <div class="col-5">
+                                {{ invoice.subtotal | currency:'USD':'symbol':"1.0-2" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label for="" class="col-6 text-right">
+                                <h5>Iva:</h5>
+                            </label>
+                            <div class="col-5">
+                                {{ invoice.iva | currency:'USD':'symbol':"1.0-2" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <hr> -->
+                <div class="row">
+                    <div class="col-6"></div>
+                    <div class="col-4">
+                        <div class="form-group row">
+                            <label for="" class="col-6 text-right">
+                                <h5>Total Neto:</h5>
+                            </label>
+                            <div class="col-5">
+                                {{ invoice.total | currency:'USD':'symbol':"1.0-2" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- <div class="row">
+                    <div class="col-1"></div>
+                    <div class="col-1">
+                        <a class="btn btn-primary btn-block" routerLink="/compras/editar-compra/{{ invoice._id }}"
+                            role="button">Editar</a>
+                    </div>
+                    <div class="col-10"></div>
+                </div> -->
+            </div>
+
+        </div>
+    </div>
+</div>

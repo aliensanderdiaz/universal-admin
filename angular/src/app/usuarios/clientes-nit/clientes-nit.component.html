@@ -1,0 +1,59 @@
+<div class="container-fluid">
+  <!-- <div class="row">
+      <button type="button" class="btn btn-primary btn-lg btn-block"
+      (click)="cambiarANIT()">Cambiar a NIT</button>
+  </div> -->
+
+
+  <div class="row">
+    <div class="col-1">NUMERO</div>
+    <div class="col-6">Razón Social</div>
+
+    <!-- <div class="col-1">TELEFONO</div> -->
+    <div class="col-2">TEL/DIRECCION</div>
+    <div class="col-2">CIUDAD/DEPTO</div>
+    <!-- <div class="col-1">DEPARTAMENTO</div> -->
+    <div class="col-1">Guardar</div>
+  </div>
+
+  <div class="row border-bottom border-info" *ngFor="let cliente of clientes">
+    <div class="col-1">{{ cliente.numeroId }}</div>
+    <div class="col-6">
+      <div class="input-group">
+        <textarea type="text" class="form-control" [(ngModel)]="cliente.razonSocial"></textarea>
+      </div>
+    </div>
+
+    <!-- <div class="col-1">
+        <div class="input-group">
+            <textarea type="text" class="form-control" [(ngModel)]="cliente.telefono"></textarea>
+          </div>
+    </div> -->
+    <div class="col-2">
+        <div class="input-group">
+            <input type="text" class="form-control" [(ngModel)]="cliente.telefono">
+          </div><div>
+            <input type="text" class="form-control" [(ngModel)]="cliente.direccion">
+          </div>
+    </div>
+    <div class="col-2">
+        <div class="input-group">
+            <input type="text" class="form-control" [(ngModel)]="cliente.ciudad">
+          </div><div>
+            <input type="text" class="form-control" [(ngModel)]="cliente.departamento">
+          </div>
+    </div>
+    <!-- <div class="col-1">
+        <div class="input-group">
+          </div>
+    </div> -->
+    <div class="col-1">
+        <div class="input-group">
+            <button class="btn btn-success" type="button"
+            (click)="editarCliente(cliente)">Guardar</button>
+          </div>
+    </div>
+  </div>
+
+
+</div>

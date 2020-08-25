@@ -1,0 +1,83 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Crear Producto</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+      <div class="btn-group mr-2">
+          <button routerLink="/productos" class="btn btn-sm btn-outline-secondary">Productos</button>
+      </div>
+  </div>
+</div>
+
+<div class="container">
+  
+  <div class="row">
+    <h1>{{ data }}</h1>
+  </div>
+  <table>
+      <tr *ngFor="let item of datax">
+      <td>{{item  | currency}}</td>
+      </tr>
+      </table>
+
+<div class="row">
+    <p>{{ 3000 | currency}}</p>
+</div>
+
+
+<hr>
+
+  <div class="row">
+    <h1>Crear Repuestos y Accesorios - Estufas Marca Generico</h1>
+  </div>
+</div>
+
+<hr>
+
+<div class="container" *ngIf="referenciaExiste">
+  <div class="row">
+    <div class="input-group flex-nowrap">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Referencia</span>
+      </div>
+      <input type="text" class="form-control" [(ngModel)]="referencia">
+      <div class="input-group-append">
+        <button 
+          class="btn btn-outline-secondary" 
+          type="button"
+          (click)="buscarReferencia()"
+          >Buscar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="!referenciaExiste">
+  <div class="row">
+    <div class="alert alert-primary" role="alert">
+      Se creará un repuesto con referencia y modelo {{ referencia }}
+    </div>
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Nombre</span>
+    </div>
+    <input type="text" class="form-control" [(ngModel)]="nombre">
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">EAN13</span>
+    </div>
+    <input type="text" class="form-control" [(ngModel)]="ean13">
+  </div>
+
+  <div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text">EAN14</span>
+    </div>
+    <input type="text" class="form-control" [(ngModel)]="ean14">
+  </div>
+
+  <button type="button" class="btn btn-primary btn-lg btn-block" (click)="crearRepuesto()">Crear Repuesto</button>
+
+</div>

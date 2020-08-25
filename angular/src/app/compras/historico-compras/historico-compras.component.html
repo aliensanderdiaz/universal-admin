@@ -1,0 +1,99 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Historico Compras</h1>
+  <div class="btn-toolbar mb-2 mb-md-0">
+    <div class="btn-group mr-2">
+      <button routerLink="/productos" class="btn btn-sm btn-outline-secondary">Productos</button>
+    </div>
+  </div>
+</div>
+
+<div class="container" *ngIf="producto">
+  <div class="row">
+
+    <div class="col">
+      <h3>
+          <a href="/#/productos/producto/{{ producto._id }}" target="_blank">
+            {{ producto.nombre }}
+          </a>
+      </h3>
+      <div class="form-group row">
+        <label class="col-sm-4 col-form-label">Modelo</label>
+        <div class="col-sm-8">
+          <input type="text" readonly class="form-control-plaintext" [value]="producto.caracteristicas.modelo">
+        </div>
+
+        <label class="col-sm-4 col-form-label">Referencia</label>
+        <div class="col-sm-8">
+          <input type="text" readonly class="form-control-plaintext" [value]="producto.caracteristicas.referencia">
+        </div>
+      </div>
+    </div>
+
+    <div class="col" *ngIf="producto.pictures.large.length > 0">
+      <img [src]="producto.pictures.large[producto.pictures.pp - 1]" alt="">
+    </div>
+
+  </div>
+</div>
+
+
+<div class="container" *ngIf="compras && compras.length > 0">
+  <h3>
+    Compra Regular
+    <!-- <a href="/productos/producto/{{ compras[0].linea.productId._id }}" target="_blank">
+      {{ compras[0].linea.productId.nombre }}
+    </a> -->
+  </h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Fecha</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Valor Unidad</th>
+        <th scope="col">Ver Factura</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let compra of compras">
+        <td>{{ compra.supplierDate | date:'d/M/yy' }}</td>
+        <td>{{ compra.linea.qty }}</td>
+        <td>{{ compra.linea.withTaxUnit }}</td>
+        <!-- <td><button type="button" class="btn btn-primary" (click)="irACompra(compra._id)">VER</button></td> -->
+        <td><a href="/compras/compra/{{compra._id}}" target="_blank">Ver</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="container" *ngIf="combos && combos.length > 0">
+  <h3>
+    <!-- <a href="/productos/producto/{{ combos[0].linea.productId._id }}" target="_blank">
+      {{ combos[0].linea.productId.nombre }}
+    </a> - Combos -->
+    Compra en Promoción
+  </h3>
+
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Fecha</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Valor Unidad</th>
+        <th scope="col">Ver Factura</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let combo of combos">
+        <td>{{ combo.supplierDate | date:'d/M/yy' }}</td>
+        <td>{{ combo.linea.qty }}</td>
+        <td>
+          <p>
+            {{ combo.linea.withTaxUnit | currency:'USD':'symbol':"1.0-2" }}
+          </p>
+        </td>
+        <!-- <td><button type="button" class="btn btn-primary" (click)="irACompra(combo._id)">VER</button></td> -->
+        <td><a href="/compras/compra/{{combo._id}}" target="_blank">Ver</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

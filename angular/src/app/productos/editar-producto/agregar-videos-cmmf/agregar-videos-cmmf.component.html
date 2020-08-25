@@ -1,0 +1,109 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Agregar Videos y CMMF al Producto</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/productos" class="btn btn-sm btn-outline-secondary">Productos</button>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="!cargando">
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <h5>{{ producto.nombre }}</h5>
+            </div>
+            <hr>
+            <div class="row" *ngIf="videosAnteriores && videosAnteriores.length > 0">
+                <div class="col">
+                    <h3>Videos Anteriores</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let video of videosAnteriores">{{ video }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row" *ngIf="cmmfAnteriores && cmmfAnteriores.length > 0">
+                <div class="col">
+                    <h3>CMMFs Anteriores</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let cmmf of cmmfAnteriores">{{ cmmf.codigo }} - {{ cmmf.proveedor.primerNombre }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row" *ngIf="videosNuevos && videosNuevos.length > 0">
+                <div class="col">
+                    <h3>Videos Nuevos</h3>
+                    <ul class="list-group">
+                        <li class="list-group-item" *ngFor="let video of videosNuevos">{{ video }}</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row" *ngIf="cmmfNuevos && cmmfNuevos.length > 0">
+                <div class="col">
+                    <h3>CMMFs Nuevos</h3>
+                    <ul class="list-group" *ngFor="let cm of cmmfNuevos; let i = index">
+                        <li class="list-group-item list-group-item-info">{{ cmmfProveedores[i] }} - {{ cm.codigo }}</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+
+
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <h4>Videos</h4>
+            <div class="input-group mb-3">
+                <input type="text" class="form-control" placeholder="Url de Video" [(ngModel)]="videoUrl" [ngModelOptions]="{standalone: true}">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="button" (click)="agregarVideo()">+</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <h4>Cmmf</h4>
+            <!-- <ul class="list-group" *ngFor="let cm of cmmfs; let i = index">
+                <li class="list-group-item list-group-item-info">{{ cmmfProveedores[i] }} - {{ cm.codigo }}</li>
+            </ul> -->
+            <hr>
+            <div class="input-group mb-3">
+                <input #inputProveedor type="text" class="form-control" placeholder="Buscar Proveedor">
+            </div>
+            <hr>
+            <ul [style.display]="proveedoresFiltrados.length> 0 ? 'block' : 'none'">
+                <li *ngFor="let proveedor of proveedoresFiltrados">
+                    <span>{{ proveedor.primerNombre }}</span>
+                    <button type="button" class="btn btn-link" (click)="elegirProveedor(proveedor)">Elegir Proveedor</button>
+                </li>
+            </ul>
+            <hr>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Proveedor</span>
+                </div>
+                <input type="text" class="form-control" placeholder="Proveedor" [(ngModel)]="proveedorElegido.primerNombre" [ngModelOptions]="{standalone: true}" readonly>
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">CMMF</span>
+                </div>
+
+                <input type="text" class="form-control" placeholder="CMMF" [(ngModel)]="cmmf" [ngModelOptions]="{standalone: true}">
+            </div>
+            <button type="button" class="btn btn-secondary" (click)="guardarCmmf()">Añadir CMMF</button>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col"></div>
+        <div class="col">
+            <button class="btn btn-primary btn-block" (click)="grabarCmmf()">Grabar en base de datos</button>
+        </div>
+    </div>
+</div>

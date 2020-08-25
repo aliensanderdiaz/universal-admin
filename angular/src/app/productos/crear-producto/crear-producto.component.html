@@ -1,0 +1,259 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Crear Producto</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/productos" class="btn btn-sm btn-outline-secondary">Productos</button>
+        </div>
+    </div>
+</div>
+
+<div class="container" [hidden]="!referenciaExiste">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <label class="input-group-text">Tipo</label>
+        </div>
+        <select class="custom-select" [(ngModel)]="etiqueta" (change)="testTipo()">
+            <option [value]="t" *ngFor="let t of etiquetas">{{t}}</option>
+        </select>
+    </div>
+
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text">Referencia</span>
+        </div>
+        <input type="text" class="form-control" [(ngModel)]="referenciaBuscar" placeholder="Buscar"
+            (change)="verificarReferencia()">
+    </div>
+
+
+</div>
+
+<div class="container" [hidden]="referenciaExiste">
+
+
+    <nav>
+        <div class="nav nav-tabs nav-fill">
+            <a class="nav-item nav-link pointer" (click)="cambiarPagina(1)" [class.active]="pagina == 1"
+                [class.show]="pagina == 1">Información</a>
+            <a class="nav-item nav-link pointer" (click)="cambiarPagina(2)" [class.active]="pagina == 2"
+                [class.show]="pagina == 2">Caracteristicas</a>
+            <a class="nav-item nav-link pointer" (click)="cambiarPagina(3)" [class.active]="pagina == 3"
+                [class.show]="pagina == 3">Detalles</a>
+            <!-- <a class="nav-item nav-link pointer" (click)="cambiarPagina(4)" [class.active]="pagina == 4" [class.show]="pagina == 4" (click)="cargarProveedores()">Otros</a> -->
+        </div>
+    </nav>
+
+    <hr>
+
+    <form (keydown.enter)="$event.preventDefault()" (submit)="crearProducto(productForm)" #productForm="ngForm">
+
+        <div class="tab-pane" [hidden]="pagina != 1">
+
+            <div class="row">
+                <div class="col">
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><strong>Nombre</strong></label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="nombre" placeholder="Nombre"
+                                [(ngModel)]="nombre">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><strong>Marca</strong></label>
+                        <div class="col-sm-10">
+                            <select class="form-control" name="marca" [(ngModel)]="marca">
+                                <option *ngFor="let marca of marcas" [value]="marca._id">{{ marca.nombre }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label"><strong>Categoría</strong></label>
+                        <div class="col-sm-10">
+                            <input type="text" (click)="buscarCategorias()" class="form-control pointer"
+                                name="categoria" placeholder="Buscar..." [(ngModel)]="categoria.nombre" readonly>
+                        </div>
+                    </div>
+
+                    <div [hidden]="!buscarCategoria">
+                        <input #inputCategoria type="text" class="form-control" placeholder="Buscar Categoria">
+                        <hr>
+                        <ul [style.display]="categoriasFiltradas.length> 0 ? 'block' : 'none'">
+                            <li *ngFor="let categoria of categoriasFiltradas">
+                                <span>{{ categoria.abuelo ? categoria.abuelo.nombre : ''}} -
+                                    {{ categoria.parent ? categoria.parent.nombre : ''}} - {{ categoria.nombre }}</span>
+                                <button type="button" class="btn btn-link" (click)="elegirCategoria(categoria)">Elegir
+                                    Categoría</button>
+                            </li>
+                        </ul>
+                        <hr>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+        <div class="tab-pane" [hidden]="pagina != 2">
+
+            <div class="form-group row" *ngFor="let caracteristica of caracteristicas; let i = index">
+                <label class="col-sm-2 col-form-label"><strong>{{ caracteristica[0] }}</strong></label>
+                <div class="col-sm-10">
+                    <input *ngIf="caracteristica[0] != 'Color'" [type]="caracteristica[1]" class="form-control"
+                        [name]="caracteristicasSlug[i]" [placeholder]="caracteristica[0]"
+                        [(ngModel)]="this[caracteristicasSlug[i]]">
+
+                    <select *ngIf="caracteristica[0] === 'Color'" class="form-control" [name]="caracteristicasSlug[i]"
+                        [(ngModel)]="this[caracteristicasSlug[i]]">
+                        <option *ngFor="let opcion of colores" [value]="opcion.nombre">{{ opcion.nombre }}</option>
+                    </select>
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="tab-pane" [hidden]="pagina != 3">
+
+            <ng-container *ngIf="categoriaParentConDetalles">
+                <div class="form-group row"
+                    *ngFor="let caracteristica of categoriaParentConDetalles.detalles; let i = index">
+                    <label class="col-sm-2 col-form-label"><strong>{{ caracteristica[0] }}</strong></label>
+
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <!-- <ng-template [ngIf]="caracteristica[2] === null && caracteristica[3] === null">
+                            <input type="text" class="form-control" [name]="caracteristica[1]" [placeholder]="caracteristica[0]" [(ngModel)]="this[caracteristica[1]]">
+
+                        </ng-template> -->
+                            <ng-template [ngIf]="!caracteristica[4]">
+
+                                <select class="form-control" [name]="caracteristica[1]"
+                                    [(ngModel)]="this[caracteristica[1]]">
+                                    <option *ngFor="let opcion of caracteristica[2]" [value]="opcion">{{ opcion }}
+                                    </option>
+                                </select>
+
+                            </ng-template>
+                            <!-- <ng-template [ngIf]="caracteristica[2] === null && caracteristica[3]">
+
+                            <input type="text" class="form-control col" [name]="caracteristica[1] + '_A'" [placeholder]="caracteristica[0]" [(ngModel)]="this[caracteristica[1] + '_A']">
+                            <select class="form-control col" [name]="caracteristica[1] + '_B'" [(ngModel)]="this[caracteristica[1] + '_B']">
+                                <option *ngFor="let unidad of caracteristica[3]" [value]="unidad">{{ unidad }}</option>
+                            </select>
+
+
+                        </ng-template> -->
+
+                            <ng-template [ngIf]="caracteristica[4]">
+
+                                <select class="form-control" [name]="caracteristica[1]"
+                                    [(ngModel)]="this[caracteristica[1]]" multiple>
+                                    <option *ngFor="let opcion of caracteristica[2]" [value]="opcion">{{ opcion }}
+                                    </option>
+                                </select>
+
+                            </ng-template>
+                        </div>
+                    </div>
+
+                </div>
+                <hr>
+                <button type="submit" class="btn btn-primary">Submit</button>
+
+            </ng-container>
+
+
+
+        </div>
+        <div class="tab-pane" [hidden]="pagina != 4">
+
+            <!-- <div class="input-group mb-3">
+            <div class="custom-file">
+                <input #productosImg type="file" class="custom-file-input" (change)="loadImages($event)" accept="image/*" multiple>
+                <label class="custom-file-label">Elegir Archivos...</label>
+            </div>
+        </div>
+
+        <app-custom-canvas *ngFor="let dato of coleccion" [image]="dato" [carpeta]="this.productoId"></app-custom-canvas>
+
+        <br><br>
+        <div *ngIf="servicioURL.obtenerUrls() && servicioURL.obtenerUrls().length > 0">
+            <div *ngFor="let url of servicioURL.obtenerUrls(); let i = index" (click)="elegir(i)" [style.background-color]="i == pp-1 ? 'Pink' : 'White'">
+                <p>{{ url }}</p>
+                <img src="{{ url }}" alt="" width="100px">
+            </div>
+        </div>
+        <br><br>
+        <div *ngIf="this.servicioURL.urlFirebase.length > 0">
+            <button type="button" class="btn btn-primary" (click)="crearArrayImagenes()" *ngIf="this.coleccion.length === this.servicioURL.urlFirebase.length">Agregar Imagenes al Producto</button>
+        </div> -->
+
+            <div class="row">
+                <div class="col">
+                    <h4>Videos</h4>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="Url de Video" [(ngModel)]="videoUrl"
+                            [ngModelOptions]="{standalone: true}">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary" type="button" (click)="agregarVideo()">+</button>
+                        </div>
+                    </div>
+                    <ul class="list-group list-group-flush" *ngFor="let url of videoUrls">
+                        <li class="list-group-item">{{ url }}</li>
+                    </ul>
+
+
+                </div>
+                <div class="col">
+                    <h4>Cmmf</h4>
+                    <ul class="list-group" *ngFor="let cm of cmmfs; let i = index">
+                        <li class="list-group-item list-group-item-info">{{ cmmfProveedores[i] }} - {{ cm.codigo }}</li>
+                    </ul>
+                    <hr>
+                    <div class="input-group mb-3">
+                        <input #inputProveedor type="text" class="form-control" placeholder="Buscar Proveedor">
+                    </div>
+                    <hr>
+                    <ul [style.display]="proveedoresFiltrados.length> 0 ? 'block' : 'none'">
+                        <li *ngFor="let proveedor of proveedoresFiltrados">
+                            <span>{{ proveedor.nombre }}</span>
+                            <button type="button" class="btn btn-link" (click)="elegirProveedor(proveedor)">Elegir
+                                Proveedor</button>
+                        </li>
+                    </ul>
+                    <hr>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Proveedor</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Proveedor"
+                            [(ngModel)]="proveedorElegido.nombre" [ngModelOptions]="{standalone: true}">
+                    </div>
+
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">CMMF</span>
+                        </div>
+
+                        <input type="text" class="form-control" placeholder="CMMF" [(ngModel)]="cmmf"
+                            [ngModelOptions]="{standalone: true}">
+                    </div>
+                    <button type="button" class="btn btn-secondary" (click)="guardarCmmf()">Añadir CMMF</button>
+                </div>
+            </div>
+            <hr>
+
+        </div>
+
+
+
+    </form>
+
+</div>

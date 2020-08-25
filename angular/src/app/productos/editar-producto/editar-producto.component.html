@@ -1,0 +1,124 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Editar Producto</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button *ngIf="productoId" routerLink="/productos/producto/{{productoId}}"
+                class="btn btn-sm btn-outline-secondary">Volver</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h3 style="text-align: center" *ngIf="!cargando">{{ producto.nombre }}</h3>
+    <hr>
+    <div class="row">
+        <div class="col" *ngIf="producto">
+            <h5>
+                Accesorios
+                <span class="badge badge-info" *ngIf="accesorios && accesorios.length > 0">{{ accesorios.length }}</span>
+            </h5>
+            <!-- <ul class="list-group">
+                <li class="list-group-item" *ngFor="let accesorio of accesorios">{{ accesorio.nombre }}</li>
+            </ul> -->
+            <p *ngIf="accesorios && accesorios.length === 0">
+                Aún no hay accesorios para este producto
+            </p>
+            <table class="table table-striped" *ngIf="accesorios && accesorios.length > 0">
+                <thead>
+                    <tr>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let accesorio of accesorios; index as i">
+                        <td>
+                            <img [src]="accesorio.pictures.large[0]" alt="" style="width: 150px">
+                        </td>
+                        <td>
+                            <p>
+                                {{ accesorio.nombre }} <br>
+                                REF: {{ accesorio.caracteristicas.referencia }} <br>
+                                MOD: {{ accesorio.caracteristicas.modelo }} <br>
+                                <span class="badge badge-danger pointer" (click)="eliminarAccesorio(i)">
+                                    Eliminar
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr>
+            <h5>
+                Repuestos
+                <span class="badge badge-info" *ngIf="repuestos && repuestos.length > 0">{{ repuestos.length }}</span>
+            </h5>
+            <!-- <ul class="list-group">
+                <li class="list-group-item" *ngFor="let repuesto of repuestos">{{ repuesto.nombre }}</li>
+            </ul> -->
+
+            <p *ngIf="repuestos && repuestos.length === 0">
+                Aún no hay repuestos para este producto
+            </p>
+            <table class="table table-striped" *ngIf="repuestos && repuestos.length > 0">
+
+                <thead>
+                    <tr>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let repuesto of repuestos; index as i">
+                        <td>
+                            <img [src]="repuesto.pictures.large[0]" alt="" style="width: 150px">
+                        </td>
+                        <td>
+                            <p>
+                                {{ repuesto.nombre }} <br>
+                                REF: {{ repuesto.caracteristicas.referencia }} <br>
+                                MOD: {{ repuesto.caracteristicas.modelo }} <br>
+                                <span class="badge badge-danger pointer" (click)="eliminarRepuesto(i)">
+                                    Eliminar
+                                </span>
+                            </p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col">
+            
+        </div>
+
+    </div>
+    <hr>
+    <div class="row">
+        <div class="col"></div>
+        <div class="col">
+            <input class="form-control" #inputProducto type="text" placeholder="Referencia">
+            <input class="form-control" #inputProductoModelo type="text" placeholder="Modelo">
+            <hr>
+            <ul [style.display]="productosFiltrados.length> 0 ? 'block' : 'none'">
+                <li *ngFor="let producto of productosFiltrados">
+                    <span>{{ producto.nombre }}</span>
+                    <button type="button" class="btn btn-link" (click)="elegirRepuesto(producto)">Repuesto</button> --
+                    <button type="button" class="btn btn-link" (click)="elegirAccesorio(producto)">Accesorio</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <hr>
+    <div class="row">
+        <button type="button" class="btn btn-primary btn-block" (click)="actualizarProducto()">Actualizar</button>
+    </div>
+    <hr>
+</div>
+
+
+<!-- <div class="container">
+    <div class="row">
+        <input class="form-control" #inputProducto type="text" placeholder="Referencia">
+        <input class="form-control" #inputProductoModelo type="text" placeholder="Modelo">        
+    </div>
+</div> -->

@@ -1,0 +1,109 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Crear Pedido</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/productos/por-marca-categoria" class="btn btn-sm btn-outline-secondary">Productos</button>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="container" [hidden]="!mostrarBuscador">
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">Producto</span>
+                </div>
+                <input #inputProducto type="text" class="form-control" placeholder="Buscar por nombre">
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div class="row" *ngIf="productosFiltrados.length > 0">
+        <div class="col">
+            <ul [style.display]="productosFiltrados.length> 0 ? 'block' : 'none'">
+                <li *ngFor="let producto of productosFiltrados">
+                    <span>{{ producto.caracteristicas.referencia }} - {{ producto.nombre }}</span>
+                    <button type="button" class="btn btn-link" (click)="elegirProducto(producto)">Elegir Producto</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" *ngIf="producto">
+    <div class="row">
+        <div class="col">
+            <div class="col" *ngIf="producto.pictures.large.length > 0">
+                <img [src]="producto.pictures.large[producto.pictures.pp - 1]" alt="">
+            </div>
+        </div>
+        <div class="col">
+
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Nombre</label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control" [value]="producto.nombre">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label">Referencia</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" readonly [value]="producto.caracteristicas.referencia">
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <hr>
+    <div class="row" *ngIf="producto.repuestos && producto.repuestos.length > 0">
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let repuesto of producto.repuestos">
+                        <td>
+                            <img [src]="repuesto.pictures.small[0]" alt="">
+                        </td>
+                        <th>{{ repuesto.caracteristicas.referencia }}-{{ repuesto.nombre }}-{{ repuesto.caracteristicas.modelo }}</th>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> -->
+
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h3>Lista de Productos en el Carrito</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-1"></div>
+    <div class="col-5"><h5>Nombre</h5></div>
+    <div class="col-2"><h5>Referencia</h5></div>
+    <div class="col-2"><h5>Modelo</h5></div>
+    <div class="col-2"><h5>Cantidad</h5></div>
+  </div>
+
+  <div class="row border-bottom" *ngFor="let elemento of cartService.productos">
+    <div class="col-1">
+        <img src="{{urlApi}}images/{{elemento.producto._id}}.png" alt="Producto Img">
+    </div>
+      <div class="col-5">{{ elemento.producto.nombre }}</div>
+      <div class="col-2">{{ elemento.producto.caracteristicas.referencia }}</div>
+      <div class="col-2">{{ elemento.producto.caracteristicas.modelo }}</div>
+      <div class="col-2">
+          <input type="number" class="form-control" [(ngModel)]="elemento.cantidad">
+      </div>
+    </div>
+</div>

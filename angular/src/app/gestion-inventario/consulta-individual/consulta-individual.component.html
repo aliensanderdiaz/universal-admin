@@ -1,0 +1,82 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h1 class="text-center">Gestión de Inventario - Consulta Individual</h1>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col">
+      <p>
+        Busca un producto por referencia, para ver el histórico de su inventario
+      </p>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">REFERENCIA</span>
+        </div>
+        <input type="text" class="form-control" [(ngModel)]="referencia">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" (click)="buscarProducto()">BUSCAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row" *ngIf="busquedaTerminada && inventario">
+    <div class="col">
+      <h3>
+        {{ inventario.producto.nombre }}
+        <span class="badge badge-secondary">{{ inventario.stock }}</span>
+      </h3>
+
+      <div class="row border-bottom">
+        <div class="col">
+          <h5>Tipo</h5>
+        </div>
+        <div class="col">
+          <h5>Stock Inicial</h5>
+        </div>
+        <div class="col">
+          <h5>Cantidad</h5>
+        </div>
+        <div class="col">
+          <h5>Stock Final</h5>
+        </div>
+        <div class="col">
+          <h5>Fecha</h5>
+        </div>
+        <div class="col">
+          <h5>Precio</h5>
+        </div>
+      </div>
+
+      <div class="row border-bottom" *ngFor="let movimiento of inventario.movimientos">
+        <div class="col">
+          {{ movimiento.tipo }}
+        </div>
+        <div class="col">
+          {{ movimiento.stockInicial }}
+        </div>
+        <div class="col">
+          {{ movimiento.cantidad }}
+        </div>
+        <div class="col">
+          {{ movimiento.stockFinal }}
+        </div>
+        <div class="col" (click)="log(movimiento.fecha)">
+          {{ movimiento.fecha | date:'MMMM d, y':undefined:'es-Co' | titlecase }}
+        </div>
+        <div class="col">
+          {{ movimiento.precio | currency:undefined:'symbol-narrow':'1.2-2':'es-Co'  }}
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+</div>

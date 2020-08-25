@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        Usuarios
+        <span class="badge badge-secondary" *ngIf="totalUsuarios">{{ totalUsuarios }}</span>
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/usuarios/crear-usuario" class="btn btn-sm btn-outline-secondary">Crear</button>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Tipo Id</th>
+            <th scope="col">Id</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Ciudad</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let usuario of usuarios">
+            <td *ngIf="usuario.tipoId === 'nit'">{{ usuario.primerNombre }}</td>
+            <td *ngIf="usuario.tipoId === 'cc'">{{ usuario.primerNombre }} {{ usuario.segundoNombre }} {{ usuario.apellidos }}</td>
+            <td>{{ usuario.tipo }}</td>
+            <td>{{ usuario.tipoId }}</td>
+            <td>{{ usuario.numeroId }}</td>
+            <td>{{ usuario.telefono }}</td>
+            <td>{{ usuario.ciudad }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<button type="button" class="btn btn-info" *ngIf="desde > 0" (click)="cambiarDesde(-8)">&lt;&lt; Anterior</button>
+<button type="button" class="btn btn-info" *ngIf="desde + 8 < totalUsuarios" (click)="cambiarDesde(+8)">Siguiente &gt;&gt;</button>

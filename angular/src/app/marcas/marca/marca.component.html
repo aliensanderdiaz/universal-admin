@@ -1,0 +1,20 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        Detalles de Marca
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/marcas" class="btn btn-sm btn-outline-secondary">Marcas</button>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="marca">
+    <h3>{{ marca.nombre }}</h3>
+    <h5>Categorías Asociadas</h5>
+    <ul class="list-group" *ngFor="let categoria of marca.categorias">
+        <li class="list-group-item">
+            {{ categoria.parent.nombre ? categoria.parent.nombre : '' }} - {{ categoria.nombre }}
+        </li>
+    </ul>
+</div>

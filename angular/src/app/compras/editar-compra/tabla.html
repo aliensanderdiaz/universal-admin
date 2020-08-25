@@ -1,0 +1,73 @@
+    <table class="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th style="width: 5%">#</th>
+          <th style="width: 31%">Producto</th>
+          <th style="width: 8%">Cant.</th>
+          <th style="width: 10%">Vr Unit.</th>
+          <th style="width: 8%">Desc. 1 (%)</th>
+          <th style="width: 8%">Desc. 2 (%)</th>
+          <!-- <th style="width: 10%">Iva (%)</th> -->
+          <th style="width: 10%">Neto</th>
+          <th style="width: 10%">+Iva</th>
+          <th style="width: 10%">+IvaUnit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let product of productosElegidos; trackBy: trackByProductId; let i = index">
+          <td><input class="form-control" type="text" readonly value="{{ i + 1 }}"></td>
+          <td>
+            <!-- <div class="input-group">
+              <input class="form-control" type="text" readonly value="{{ product.productId.nombre }}">
+              <div class="input-group-append">
+                <button (click)="eliminarProducto(i)" class="btn btn-outline-secondary" type="button">X</button>
+              </div>
+            </div> -->
+
+            <div class="row">
+              <div class="col-8">
+                <p>
+                  {{ product.productName }}
+                </p>
+              </div>
+              <div class="col-2">
+                <button (click)="eliminarProducto(i)" class="btn btn-outline-secondary">X</button>
+              </div>
+              <div class="col-2"></div>
+            </div>
+          </td>
+          <td>
+            <input class="form-control" (keyup)="actualizar($event)" type="number" min="0" [(ngModel)]="product.qty"
+              [ngModelOptions]="{standalone: true}">
+          </td>
+          <td>
+            <input class="form-control" (keyup)="actualizar($event)" type="number" min="0"
+              [(ngModel)]="product.unitValue" [ngModelOptions]="{standalone: true}">
+          </td>
+          <td>
+            <input class="form-control" (keyup)="actualizar($event)" type="number" min="0" max="100"
+              [(ngModel)]="product.discount" [ngModelOptions]="{standalone: true}">
+          </td>
+          <td>
+            <input class="form-control" (keyup)="actualizar($event)" type="number" min="0" max="100"
+              [(ngModel)]="product.discount2" [ngModelOptions]="{standalone: true}">
+          </td>
+          <td>
+            <!-- <input class="form-control" type="number" readonly [(ngModel)]="product.tax"
+              [ngModelOptions]="{standalone: true}"> -->
+              <input class="form-control" type="number" readonly value="{{ this.Math.round(product.withTax / 1.19) }}">
+          </td>
+          <td>
+            <input class="form-control" type="number" readonly [(ngModel)]="product.withTax"
+              [ngModelOptions]="{standalone: true}"
+              value="{{ this.Math.round( 1.19 * ( product.qty * product.unitValue ) * ( 1 - ( product.discount / 100 ) ) * ( 1 - ( product.discount2 / 100 ) ) ) }}">
+          </td>
+          <td>
+            <!-- <input class="form-control" type="number" [(ngModel)]="product.withTaxUnit" name="product.withTaxUnit" value="{{ this.Math.round( 1.19 * ( product.qty * product.unitValue ) * ( 1 - ( product.discount / 100 ) ) * ( 1 - ( product.discount2 / 100 ) ) ) }}"> -->
+            <input class="form-control" type="number" readonly [(ngModel)]="product.withTaxUnit"
+              [ngModelOptions]="{standalone: true}"
+              value="{{ this.Math.round(( 1.19 * ( product.qty * product.unitValue ) * ( 1 - ( product.discount / 100 ) ) * ( 1 - ( product.discount2 / 100 ) ) ) / product.qty ) }}">
+          </td>
+        </tr>
+      </tbody>
+    </table>

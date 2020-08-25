@@ -1,0 +1,145 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">
+        Crear usuario
+    </h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/usuarios" class="btn btn-sm btn-outline-secondary">Usuarios</button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="usuarioEncontrado">
+    <div class="form-group row">
+        <label class="col-sm-2 col-form-label"><strong>Tipo de Id</strong></label>
+        <div class="col-sm-10">
+            <select class="form-control" name="tipoId" [(ngModel)]="tipoId">
+                <option value="nit">NIT</option>
+                <option value="cc">Cédula de Ciudadanía</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="tipoId && usuarioEncontrado">
+    <div class="form-group row">
+        <label *ngIf="tipoId === 'cc'" class="col-sm-2 col-form-label"><strong>Cédula</strong></label>
+        <label *ngIf="tipoId === 'nit'" class="col-sm-2 col-form-label"><strong>NIT</strong></label>
+        <div class="col-sm-10 input-group">
+            <input type="text" class="form-control" name="numeroId" [(ngModel)]="numeroId">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" (click)="buscarUsuario()">Buscar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="tipoId && !usuarioEncontrado">
+
+    <form (keydown.enter)="$event.preventDefault()" (submit)="crearProveedor(proveedorForm)" #proveedorForm="ngForm">
+
+        <div *ngIf="tipoId === 'nit'">
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label"><strong>Razón Social</strong></label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="primerNombre" placeholder="Razón Social"
+                        [(ngModel)]="primerNombre">
+                </div>
+            </div>
+
+        </div>
+
+        <div *ngIf="tipoId === 'cc'">
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label"><strong>Primer Nombre</strong></label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="primerNombre" placeholder="Primer Nombre"
+                        [(ngModel)]="primerNombre">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label"><strong>Segundo Nombre</strong></label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="segundoNombre" placeholder="Segundo Nombre"
+                        [(ngModel)]="segundoNombre">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label"><strong>Apellidos</strong></label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" name="apellidos" placeholder="Apellidos"
+                        [(ngModel)]="apellidos">
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"><strong>Tipo de Id</strong></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="tipoId" [(ngModel)]="tipoId" readonly>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"><strong>Número de Id</strong></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="numeroId" placeholder="Número de Identificación"
+                    [(ngModel)]="numeroId" readonly>
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"><strong>Telefono</strong></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="telefono" placeholder="Teléfono" [(ngModel)]="telefono">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"><strong>Dirección</strong></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="direccion" placeholder="Dirección"
+                    [(ngModel)]="direccion">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"><strong>Ciudad</strong></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="ciudad" placeholder="Ciudad" [(ngModel)]="ciudad">
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"><strong>Departamento</strong></label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" name="departamento" placeholder="Departamento"
+                    [(ngModel)]="departamento">
+            </div>
+        </div>
+
+
+
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label"><strong>Tipo</strong></label>
+            <div class="col-sm-10">
+                <select class="form-control" name="tipo" [(ngModel)]="tipo">
+                    <option value="proveedor">Proveedor</option>
+                    <option value="cliente">Cliente</option>
+                    <option value="vendedor">Vendedor</option>
+                    <option value="tecnico">Técnico</option>
+                    <option value="administrador">Administrador</option>
+                </select>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Crear Usuario</button>
+    </form>
+
+</div>

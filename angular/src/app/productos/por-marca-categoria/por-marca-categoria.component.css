@@ -1,0 +1,17 @@
+img {
+    /* max-width: 150px; */
+    width: 100%;
+    border: 1px solid gray;
+}
+
+.item-producto {
+    height: 150px;
+}
+
+.bg-alex {
+    background-color: #e9ecef
+}
+
+.input-client {
+    background-color: rgb(241, 223, 226);
+}

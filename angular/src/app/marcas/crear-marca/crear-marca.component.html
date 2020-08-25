@@ -1,0 +1,51 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Crear Marca</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/marcas" class="btn btn-sm btn-outline-secondary">Marcas</button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <form (submit)="crearMarca()">
+            <div class="form-group row">
+                <label for="staticEmail" class="col-sm-2 col-form-label">Nombre</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="Nombre de la Marca" name="nombre" [(ngModel)]="nombre">
+                </div>
+            </div>
+            <div class="form-group row" *ngIf="categoriasHijas.length > 0">
+
+                <label class="col-sm-2 col-form-label">Categorías</label>
+                <div class="col-sm-10">
+                    <ul class="list-inline">
+                        <li class="list-inline-item" *ngFor="let categoria of categoriasHijas; let i = index">
+                            {{ categoria.nombre }} <span class="badge badge-danger pointer" (click)="eliminarCategoria(i)">x</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <div class="col">
+        <div>
+            <div class="input-group mb-3">
+                <input #inputCategoria type="text" class="form-control" placeholder="Buscar Categoria">
+                <div class="input-group-append">
+                    <span class="input-group-text pointer" (click)="buscarCategoria = false">x</span>
+                </div>
+            </div>
+            <ul [style.display]="categorias.length> 0 ? 'block' : 'none'">
+                <li *ngFor="let categoria of categorias">
+                    <span>{{ categoria.parent ? categoria.parent.nombre : ''}} - {{ categoria.nombre }}</span>
+                    <button type="button" class="btn btn-link" (click)="elegirCategoria(categoria)">Elegir Categoría</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

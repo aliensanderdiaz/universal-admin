@@ -1,0 +1,24 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h3>Crear un Método de Pago</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+
+      <form>
+        <div class="form-group">
+          <label>Nombre</label>
+          <input type="text" class="form-control" placeholder="Nombre" [(ngModel)]="nombre" name="nombre">
+        </div>
+        <div class="form-group form-check">
+          <input type="checkbox" class="form-check-input" [(ngModel)]="comprobante" name="comprobante">
+          <label class="form-check-label">Comprobante</label>
+        </div>
+        <button type="submit" class="btn btn-primary" (click)="crearMetodoDePago()">Crear</button>
+      </form>
+
+    </div>
+  </div>
+</div>

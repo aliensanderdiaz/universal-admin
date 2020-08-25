@@ -1,0 +1,31 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Editar detalles del producto</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/productos" class="btn btn-sm btn-outline-secondary">Productos</button>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="!cargando">
+    <form (keydown.enter)="$event.preventDefault()" (submit)="editar(productForm)" #productForm="ngForm">
+
+        <div class="input-group row" *ngFor="let detalle of detalles; let i = index">
+            <label class="input-group-text col-4">{{ detalle[0] }}</label>
+            <!-- <select class="custom-select col-8" *ngIf="!detalle[4]" [name]="detalle[1]" [(ngModel)]="this[detalle[1]]"> -->
+            <select class="custom-select col-8" *ngIf="!detalle[4]" [name]="detalle[1]" [(ngModel)]="objetoDetallesTrocado[detalle[1]]">
+          <option *ngFor="let option of detalle[2]" [value]="option">{{ option }}</option>
+        </select>
+            <!-- <select class="custom-select col-8" *ngIf="detalle[4]" [name]="detalle[1]" [(ngModel)]="this[detalle[1]]" multiple> -->
+            <select class="custom-select col-8" *ngIf="detalle[4]" [name]="detalle[1]" [(ngModel)]="objetoDetallesTrocado[detalle[1]]" multiple>
+            <option *ngFor="let option of detalle[2]" [value]="option">{{ option }}</option>
+          </select>
+        </div>
+
+        <hr>
+
+        <button type="submit" class="btn btn-primary">Submit</button>
+
+    </form>
+
+</div>

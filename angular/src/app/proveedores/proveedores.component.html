@@ -1,0 +1,32 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Proveedores</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/proveedores/crear-proveedor" class="btn btn-sm btn-outline-secondary">Crear</button>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead class="thead-light">
+        <tr>
+            <th scope="col">Nombre</th>
+            <th scope="col">Tipo Id</th>
+            <th scope="col">Id</th>
+            <th scope="col">Teléfono</th>
+            <th scope="col">Ciudad</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let proveedor of proveedores">
+            <td>{{ proveedor.nombre }}</td>
+            <td>{{ proveedor.tipoId }}</td>
+            <td>{{ proveedor.numeroId }}</td>
+            <td>{{ proveedor.telefono }}</td>
+            <td>{{ proveedor.ciudad }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<button type="button" class="btn btn-info" *ngIf="desde > 0" (click)="cambiarDesde(-8)">&lt;&lt; Anterior</button>
+<button type="button" class="btn btn-info" *ngIf="desde + 8 < totalProveedores" (click)="cambiarDesde(+8)">Siguiente &gt;&gt;</button>

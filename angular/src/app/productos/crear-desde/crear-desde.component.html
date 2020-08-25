@@ -1,0 +1,43 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Crear Copia de Producto</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/productos" class="btn btn-sm btn-outline-secondary">Productos</button>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="!cargando">
+
+    <div class="row">
+        <div class="col">
+        </div>
+        <div class="col-1">
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group mr-2">
+                    <button routerLink="/productos/producto/{{ productoId }}" class="btn btn-sm btn-outline-secondary">Volver</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <form (keydown.enter)="$event.preventDefault()" (submit)="crearProducto(productForm)" #productForm="ngForm">
+        <div class="form-group row">
+            <label class="col-sm-2 col-form-label">Nombre</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" placeholder="Nombre de Producto" name="nombre" [(ngModel)]="producto.nombre">
+            </div>
+        </div>
+
+        <h4>Características</h4>
+        <div class="form-group row" *ngFor="let caracteristica of caracteristicas">
+            <label class="col-sm-2 col-form-label">{{ caracteristica[0] }}</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" placeholder="{{ caracteristica[0] }}" name="{{caracteristica[1]}}" [(ngModel)]="this[caracteristica[1]]">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Crear Nuevo Producto</button>
+    </form>
+</div>

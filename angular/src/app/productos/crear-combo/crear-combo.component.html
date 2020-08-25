@@ -1,0 +1,65 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Crear Combo</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/productos" class="btn btn-sm btn-outline-secondary">Productos</button>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" *ngIf="producto">
+    <div class="row">
+        <div class="col">
+            <h3>{{ producto.nombre }}</h3>
+        </div>
+    </div>
+    <div class="row" *ngIf="producto.combo && producto.combo.length > 0">
+        <div class="col">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th scope="col">Imagen</th>
+                        <th scope="col">Descripción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let productoCombo of producto.combo">
+                        <td><img [src]="productoCombo.pictures.small[productoCombo.pictures.pp -1]" alt=""></td>
+                        <td>{{ producto.caracteristicas.referencia }} - {{ producto.nombre }} - {{ producto.modelo }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<hr>
+
+<div class="container" [hidden]="!producto">
+    <div class="row">
+        <div class="col">
+            <div class="input-group mb-3">
+                <input #inputProducto type="text" class="form-control" placeholder="Buscar Productos">
+            </div>
+            <hr>
+            <ul [style.display]="productosFiltrados.length> 0 ? 'block' : 'none'">
+                <li *ngFor="let producto of productosFiltrados">
+                    <span>{{ producto.nombre }}</span>
+                    <button type="button" class="btn btn-link" (click)="elegirProducto(producto)">Agregar</button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="nombreProductos.length > 0">
+    <div class="row">
+        <div class="col">
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let nombre of nombreProductos">{{ nombre }}</li>
+            </ul>
+            <button type="button" class="btn btn-primary" (click)="guardar()">Guardar</button>
+        </div>
+    </div>
+</div>

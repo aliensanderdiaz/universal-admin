@@ -1,0 +1,43 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Detalles de la Categoría</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button routerLink="/categorias" class="btn btn-sm btn-outline-secondary">Categorías</button>
+        </div>
+    </div>
+</div>
+
+<div class="container" *ngIf="categoria">
+    <ul class="list-group">
+        <li class="list-group-item">
+            Nombre: {{ categoria.nombre }}
+        </li>
+        <li class="list-group-item" *ngIf="categoria.parent">
+            Categoría Padre: {{ categoria.parent.nombre }}
+        </li>
+    </ul>
+    <div *ngIf="categoria.detalles.length > 0">
+        <h4>Detalles</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Detalle</th>
+                    <th scope="col">Opciones</th>
+                    <th scope="col">Filtro</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let detalle of categoria.detalles">
+                    <td>{{detalle[0]}}</td>
+                    <td *ngIf="detalle[2]">
+                        <span class="badge badge-primary ml-3" *ngFor="let opcion of detalle[2]">{{ opcion }}</span>
+                    </td>
+                    <td *ngIf="!detalle[2]"></td>
+                    <td>
+                        <span class="badge ml-3">{{detalle[3] ? 'SI' : 'NO'}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

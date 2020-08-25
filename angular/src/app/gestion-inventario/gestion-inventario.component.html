@@ -1,0 +1,47 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h1 class="text-center">Gestión de Inventario</h1>
+      <p>
+        {{ fecha }} <span (click)="log()">Log</span>
+      </p>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="col">
+      <p>
+        Busca un producto por referencia y procede a indicar la cantidad de existencias iniciales
+      </p>
+
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">REFERENCIA</span>
+        </div>
+        <input type="text" class="form-control" [(ngModel)]="referencia">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" (click)="buscarProducto()">BUSCAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row" *ngIf="busquedaTerminada && producto">
+    <div class="col">
+      <h3>{{ producto.nombre }}</h3>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">EXISTENCIA INICIAL</span>
+        </div>
+        <input type="number" class="form-control" [(ngModel)]="existencias">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" (click)="crearInventario()">GUARDAR</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

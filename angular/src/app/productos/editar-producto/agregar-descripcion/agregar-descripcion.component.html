@@ -1,0 +1,68 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Agregar Descripción</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <div class="btn-group mr-2">
+            <button *ngIf="productoId" routerLink="/productos/producto/{{productoId}}" class="btn btn-sm btn-outline-secondary">Volver</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row" *ngIf="this.descripcionPoducto">
+        <div class="col">
+            <div class="alert alert-info" role="alert" *ngIf="this.descripcionPoducto.length > 0">
+                Total de descripciones en el producto: {{ descripcionPoducto.length }}.
+            </div>
+            <div class="alert alert-info" role="alert" *ngIf="this.descripcionPoducto.length === 0">
+                Producto sin descripcion aún.
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <form>
+                <div class="form-group">
+                    <label>Contenido</label>
+                    <textarea class="form-control" rows="3" [(ngModel)]="texto" [ngModelOptions]="{standalone: true}"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Alineación</label>
+                    <select class="form-control" [(ngModel)]="alineacion" [ngModelOptions]="{standalone: true}">
+                        <option value="center">Centro</option>
+                        <option value="right">Derecha</option>
+                        <option value="left">Izquierda</option>
+                    </select>
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="custom-file">
+                        <input #productosImg type="file" class="custom-file-input" (change)="loadImages($event)" accept="image/*">
+                        <label class="custom-file-label">Elegir Archivo...</label>
+                    </div>
+                </div>
+                <div class="alert alert-warning" role="alert">
+                    Utiliza una imagen cuyo nombre empieze por 'descripcion@'
+                </div>
+
+
+
+                <br><br>
+                <div *ngIf="urlImage">
+
+                    <img src="{{ urlImage }}" alt="" width="100px">
+
+                </div>
+                <br><br>
+                <div *ngIf="urlImage">
+                    <button type="button" class="btn btn-primary" (click)="agregarDescripcion()">Agregar descripcion</button>
+                </div>
+
+
+            </form>
+            <hr>
+            <div *ngIf="descripcionPoducto">
+                <button type="button" class="btn btn-primary" *ngIf="descripcionPoducto.length > cantidad" (click)="grabarEnDb()">Grabar en Base de Datos</button>
+            </div>
+        </div>
+    </div>
+</div>

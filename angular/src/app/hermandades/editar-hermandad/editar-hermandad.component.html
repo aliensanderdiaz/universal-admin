@@ -1,0 +1,57 @@
+<div class="container">
+  <div class="row">
+    <h3 *ngIf="hermandad">
+      {{ hermandad.nombre }}
+    </h3>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Buscar producto por modelo..." name="stringBusqueda"
+        [(ngModel)]="stringBusqueda">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" (click)="buscar()">Buscar</button>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="productosBusqueda && productosBusqueda.length > 0">
+    <div class="col-12">
+      <button class="btn btn-primary btn-block" (click)="agregarTodos()">Agregar Todos</button>
+    </div>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let producto of productosBusqueda">
+        {{ producto.nombre }} -
+        <span class="badge badge-secondary" (click)="agregarALaHermandad(producto)">
+          Agregar
+        </span>
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="productosHermandad && productosHermandad.length > 0">
+    <div class="row">
+      <div class="col-4">Nombre</div>
+      <div class="col-2" *ngFor="let propiedad of hermandad.propiedades">{{ propiedad.valor }}</div>
+    </div>
+    <div class="row" *ngFor="let producto of productosHermandad; let i = index">
+
+      <div class="col-4 pointer" (click)="cambiarIndiceMostrar(i)" [ngClass]="{'bg-info': i === indiceMostrar}">
+        {{ producto.nombre }}</div>
+
+      <div class="col-2" *ngFor="let propiedad of hermandad.propiedades">
+        <div class="input-group">
+          <select class="custom-select" [(ngModel)]="producto[propiedad.codigo]" [ngModelOptions]="{standalone: true}">
+            <option *ngFor="let opcion of propiedad.opciones" [value]="opcion">{{ opcion }}</option>
+          </select>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row mt-2">
+      <div class="col-12">
+        <button class="btn btn-primary btn-block" (click)="guardarHermandad()">Guardar Hermandad</button>
+      </div>
+    </div>
+  </div>
+</div>
